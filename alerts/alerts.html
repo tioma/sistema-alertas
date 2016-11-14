@@ -1,0 +1,29 @@
+<div class="container-fluid">
+
+    <div class="page-header"></div>
+
+    <div ng-repeat="alert in notifications.alerts" class="panel panel-danger animated-alert col-lg-12">
+        <div class="panel-heading row">
+            <div class="col-lg-10">Alarma - Sistema {{ alert.system }}</div><div class="col-lg-2 text-right right">{{ alert.timestamp | date: 'dd/MM/yyyy HH:mm'}}</div> </div>
+        <div class="panel-body">
+            <p>Esto es una alarma</p>
+        </div>
+    </div>
+
+    <div ng-repeat="warning in notifications.warnings" class="panel panel-warning animated-warning col-lg-12">
+        <div class="panel-heading row">
+            <div class="col-lg-10">Alerta - Sistema {{ warning.system }}</div> <div class="col-lg-2 text-right right">{{ warning.timestamp | date: 'dd/MM/yyyy HH:mm'}}</div> </div>
+        <div class="panel-body">
+            <p>Esto es una alerta</p>
+        </div>
+    </div>
+
+    <div ng-repeat="info in notifications.infos" class="panel panel-info animated-info col-lg-12">
+        <div class="panel-heading row">
+            <div class="col-lg-10">Aviso - Sistema {{ info.system }}</div> <div class="col-lg-2 text-right right">{{ info.timestamp | date: 'dd/MM/yyyy HH:mm'}}</div> </div>
+        <div class="panel-body">
+            <p>Esto es un aviso</p>
+        </div>
+    </div>
+
+</div>
