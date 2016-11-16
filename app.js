@@ -94,8 +94,8 @@ sistemaAlertas.config(['$provide', '$httpProvider', function($provide, $httpProv
 sistemaAlertas.run(['$rootScope', 'notificationService', 'clockService',
 	function($rootScope, notificationService, clockService){
 
-		$rootScope.notifications = notificationService;
-		$rootScope.timer = clockService;
+		//$rootScope.notifications = notificationService;
+		//$rootScope.timer = clockService;
 
 		//$rootScope.timer.tick();
 

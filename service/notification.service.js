@@ -23,6 +23,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		};
 
 		this.infos.push(info);
+		this.playNotifSound('audio/tonoAviso.mp3');
 	};
 
 	this.setWarningNotif = (system, data) => {
@@ -35,6 +36,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		};
 
 		this.warnings.push(warning);
+		this.playNotifSound('audio/tonoAlerta.mp3');
 	};
 
 	this.setAlertNotif = (system, data) => {
@@ -47,6 +49,18 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		};
 
 		this.alerts.push(alert);
+		this.playNotifSound('audio/tonoAlarma.mp3');
+	};
+
+	this.playNotifSound = function(url){
+		let audio = document.createElement('audio');
+		audio.style.display = "none";
+		audio.src = url;
+		audio.autoplay = true;
+		audio.onended = () => {
+			audio.remove() //Remove when played.
+		};
+		document.body.appendChild(audio);
 	}
 
 

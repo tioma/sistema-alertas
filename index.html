@@ -41,46 +41,6 @@
 </head>
 <body class="container-fluid">
 
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header" uib-dropdown>
-            <button type="button" class="navbar-toggle collapsed" data-target="#user" aria-expanded="false" ng-click="isCollapsed = !isCollapsed">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href class="navbar-brand"><!--<img src="images/logo-libredeuda-chico.PNG" height="30">-->Monitoreo</a>
-        </div>
-
-        <!--<div class="collapse navbar-collapse" id="register" aria-expanded="false" uib-collapse="isCollapsed" ng-if="!session.isAuthenticated()">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="navbar-btn"  ui-sref="register">
-                    <a href><span class="glyphicon glyphicon-user"></span> Solicitar usuario</a>
-                </li>
-            </ul>
-        </div>-->
-
-        <div class="collapse navbar-collapse" id="user" aria-expanded="false" uib-collapse="isCollapsed">
-            <ul class="nav navbar-nav navbar">
-                <li class="nav navbar-nav"><a href="#">Avisos <span class="badge">{{ notifications.infoCount }}</span></a></li>
-                <li class="nav navbar-nav"><a href="#">Alertas <span class="badge">{{ notifications.warningCount }}</span></a></li>
-                <li class="nav navbar-nav"><a href="#">Alarmas <span class="badge">{{ notifications.alertCount }}</span></a></li>
-                <!--<li class="dropdown open" uib-dropdown>
-                    <a href="#" class="dropdown-toggle"  uib-dropdown-toggle data-toggle="dropdown" role="button" aria-expanded="true"><span uib-dropdown-toggle class="glyphicon glyphicon-user"></span> {{ session.getName() }} <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
-                        <li ng-click="logOut()"><a href ><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
-                    </ul>
-                </li>-->
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="navbar-brand"><span>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</span></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-
 <div class="row wrapper">
     <div ui-view></div>
 </div>
