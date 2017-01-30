@@ -10,13 +10,14 @@ var sistemaAlertas = angular.module('sistemaAlertas', [
 
 
 sistemaAlertas.constant('API_ENDPOINTS', {
-	TERMINALES: '10.1.0.61:8090'
+	TERMINALES: '10.1.0.61:8090',
+	NOTIFICACIONES: '10.10.0.223:8073'
 });
 
 sistemaAlertas.constant('SOCKET_EVENTS', {
-	TERMINALES_INFO: 'terminales:info',
-	TERMINALES_WARNING: 'terminales:warning',
-	TERMINALES_ALERT: 'terminales:alert'
+	NOTIFICACIONES_ERR: 'notificaciones:outgoing',
+	NOTIFICACIONES_INFO: 'notificaciones:incoming',
+	NOTIFICACIONES_ISALIVE: 'notificaciones:isAlive'
 });
 
 

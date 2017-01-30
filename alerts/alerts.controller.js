@@ -7,16 +7,26 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 		$scope.timer = clockService;
 		$scope.notifications = notificationService;
 
-		$scope.$on(SOCKET_EVENTS.TERMINALES_INFO, (event, data) => {
+		$scope.lastControl = null;
+		$scope.filterNotifications = '';
+
+		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_ERR, (event, data) => {
+			console.log(data);
+			if (data.type == 'ERROR'){
+				$scope.notifications.setAlertNotif(data);
+			} else if (data.type == "WARN"){
+				$scope.notifications.setWarningNotif(data);
+			} else {
+				$scope.notifications.setInfoNotif(data);
+			}
+		});
+
+		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_INFO, (event, data) => {
 			console.log(data);
 		});
 
-		$scope.$on(SOCKET_EVENTS.TERMINALES_WARNING, (event, data) => {
-			console.log(data);
-		});
-
-		$scope.$on(SOCKET_EVENTS.TERMINALES_ALERT, (event, data) => {
-			console.log(data);
+		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_ISALIVE, (event, data) => {
+			$scope.lastControl = data;
 		});
 
 		$scope.$on('terminales:invoice', (event, data) => {
@@ -38,6 +48,8 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 			console.log(data);
 
 			$scope.notifications.setInfoNotif('Terminales', data);
-		})
+		});
+
+		$scope.notifications.removeNotifications();
 
 	}]);

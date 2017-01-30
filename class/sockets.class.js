@@ -11,16 +11,10 @@ sistemaAlertas.factory('Socket', ['socketFactory', function(socketFactory) {
 			this.socket.on('connect', () => {
 				//TODO definir mensajes de forward
 				console.log('socket conectado');
-				this.socket.forward('info');
-				this.socket.forward('warning');
-				this.socket.forward('alert');
 
-				//PROBANDO CON EVENTOS QUE YA TENGO
-				this.socket.forward('invoice');
-				this.socket.forward('gate');
-				this.socket.forward('appointment');
-
-
+				this.socket.forward('outgoing'); //eventos que hay que mostrar
+				this.socket.forward('incoming'); //alguna aplicación avisa algo
+				this.socket.forward('isAlive'); //el servicio está vivo
 			});
 
 			this.socket.on('reconnect', () => {

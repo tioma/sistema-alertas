@@ -3,8 +3,8 @@ html, body {
 }
 
 .animated-alert {
-    -webkit-animation: tada 3s;
-    animation: tada 3s
+    -webkit-animation: tada 1s;
+    animation: tada 1s
 }
 
 .animated-alert.ng-enter-stagger {
@@ -13,13 +13,13 @@ html, body {
     animation-delay:0.2s;
 
     /*this is here to avoid accidental CSS inheritance */
-    -webkit-animation-duration:0;
-    animation-duration:0;
+    -webkit-animation-duration:0s;
+    animation-duration:0s;
 }
 
 .animated-warning {
-    -webkit-animation: zoomIn 2s;
-    animation: zoomIn 2s
+    -webkit-animation: zoomIn 1s;
+    animation: zoomIn 1s
 }
 
 .animated-warning.ng-enter-stagger {
@@ -28,13 +28,13 @@ html, body {
     animation-delay:0.2s;
 
     /*this is here to avoid accidental CSS inheritance */
-    -webkit-animation-duration:0;
-    animation-duration:0;
+    -webkit-animation-duration:0s;
+    animation-duration:0s;
 }
 
 .animated-info {
-    -webkit-animation: slideInLeft 2s;
-    animation: slideInLeft 2s
+    -webkit-animation: slideInLeft 1s;
+    animation: slideInLeft 1s
 }
 
 .animated-info.ng-enter-stagger {
@@ -43,8 +43,8 @@ html, body {
     animation-delay:0.2s;
 
     /*this is here to avoid accidental CSS inheritance */
-    -webkit-animation-duration:0;
-    animation-duration:0;
+    -webkit-animation-duration:0s;
+    animation-duration:0s;
 }
 
 .logo-image {
@@ -131,4 +131,20 @@ html, body {
     -ms-flex-pack : center;
     -webkit-justify-content : center;
     justify-content : center;
+}
+
+
+@media (min-width:768px) { /* don't break navbar on small screen */
+    .navbar-right {
+        text-align: right !important;
+    }
+
+    .navbar-clock {
+        width: 100%;
+    }
+
+    .navbar-center {
+        width: 100%;
+        text-align: center;
+    }
 }

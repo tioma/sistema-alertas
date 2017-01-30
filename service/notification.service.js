@@ -1,9 +1,13 @@
 /**
  * Created by kolesnikov-a on 14/11/2016.
  */
-sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', function(Socket, API_ENDPOINTS, SOCKET_EVENTS){
+sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout){
 
-	const socketTerminales = new Socket(API_ENDPOINTS.TERMINALES, 'terminales:');
+	const socketNotification = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
+
+	this.alertsMax = 7;
+	this.warningsMax = 5;
+	this.infosMax = 5;
 
 	this.infoCount = 0;
 	this.warningCount = 0;
@@ -13,39 +17,55 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 	this.warnings = [];
 	this.alerts = [];
 
-	this.setInfoNotif = (system, data) => {
+	this.removeNotifications = () => {
+		$timeout(() => {
+			console.log('chequeamos arrays');
+			if (this.infos.length > this.infosMax){
+				this.infos.splice(0, this.infos.length-this.infosMax);
+			}
+			if (this.warnings.length > this.warningsMax){
+				this.warnings.splice(0, this.warnings.length-this.warningsMax);
+			}
+			if(this.alerts.length > this.alertsMax){
+				this.alerts.splice(0, this.alerts.length-this.alertsMax);
+			}
+			this.removeNotifications();
+		}, 1500);
+	};
+
+	this.setInfoNotif = (data) => {
 		this.infoCount++;
 
 		let info = {
-			system: system,
-			data: data.data,
-			timestamp: Date.now()
+			system: data.name,
+			data: data.message,
+			timestamp: data.fecha
 		};
 
 		this.infos.push(info);
 		this.playNotifSound('audio/tonoAviso.mp3');
 	};
 
-	this.setWarningNotif = (system, data) => {
+	this.setWarningNotif = (data) => {
 		this.warningCount++;
 
 		let warning = {
-			system: system,
+			system: data.name,
 			data: data.data,
-			timestamp: Date.now()
+			timestamp: data.fecha
 		};
 
 		this.warnings.push(warning);
 		this.playNotifSound('audio/tonoAlerta.mp3');
 	};
 
-	this.setAlertNotif = (system, data) => {
+	this.setAlertNotif = (data) => {
 		this.alertCount++;
 
 		let alert = {
-			system: system,
-			data: data.data,
-			timestamp: Date.now()
+			system: data.name,
+			data: data.message,
+			timestamp: data.fecha
 		};
 
 		this.alerts.push(alert);
@@ -58,7 +78,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		audio.src = url;
 		audio.autoplay = true;
 		audio.onended = () => {
-			audio.remove() //Remove when played.
+			audio.remove(); //Remove when played.
 		};
 		document.body.appendChild(audio);
 	}

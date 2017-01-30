@@ -2,14 +2,14 @@
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-            <div class="navbar-header" uib-dropdown>
+            <div class="navbar-header navbar-left col-lg-1" uib-dropdown>
                 <button type="button" class="navbar-toggle collapsed" data-target="#user" aria-expanded="false" ng-click="isCollapsed = !isCollapsed">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href class="navbar-brand"><!--<img src="images/logo-libredeuda-chico.PNG" height="30">-->Monitoreo</a>
+                <a href class="navbar-brand" ng-click="filterNotifications = ''"><!--<img src="images/logo-libredeuda-chico.PNG" height="30">-->Monitoreo</a>
             </div>
 
             <!--<div class="collapse navbar-collapse" id="register" aria-expanded="false" uib-collapse="isCollapsed" ng-if="!session.isAuthenticated()">
@@ -21,10 +21,10 @@
             </div>-->
 
             <div class="collapse navbar-collapse" id="user" aria-expanded="false" uib-collapse="isCollapsed">
-                <ul class="nav navbar-nav navbar">
-                    <li class="nav navbar-nav"><a href="#">Avisos <span class="badge">{{ notifications.infoCount }}</span></a></li>
-                    <li class="nav navbar-nav"><a href="#">Alertas <span class="badge">{{ notifications.warningCount }}</span></a></li>
-                    <li class="nav navbar-nav"><a href="#">Alarmas <span class="badge">{{ notifications.alertCount }}</span></a></li>
+                <ul class="nav navbar-nav navbar-left col-lg-3">
+                    <li class="nav"><a href="#" ng-click="filterNotifications = 'infos'">Avisos <span class="badge">{{ notifications.infoCount }}</span></a></li>
+                    <li class="nav"><a href="#" ng-click="filterNotifications = 'warnings'">Alertas <span class="badge">{{ notifications.warningCount }}</span></a></li>
+                    <li class="nav"><a href="#" ng-click="filterNotifications = 'alerts'">Alarmas <span class="badge">{{ notifications.alertCount }}</span></a></li>
                     <!--<li class="dropdown open" uib-dropdown>
                         <a href="#" class="dropdown-toggle"  uib-dropdown-toggle data-toggle="dropdown" role="button" aria-expanded="true"><span uib-dropdown-toggle class="glyphicon glyphicon-user"></span> {{ session.getName() }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
@@ -32,37 +32,45 @@
                         </ul>
                     </li>-->
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="navbar-brand"><span>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</span></li>
+                <ul class="nav navbar-nav col-lg-6">
+                    <li class="nav navbar-center" ng-hide="lastControl == null"><a href="#"><span ng-class="lastControl.status == 'ERROR' ? 'text-danger' : ''">Ultimo control: {{ lastControl.name }} - {{ lastControl.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right col-lg-2">
+                    <li class="nav navbar-clock"><a href="#"><strong>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
     <div class="page-header"></div>
 
-    <div ng-repeat="alert in notifications.alerts | orderBy:'+':true" class="panel panel-danger animated-alert col-lg-12">
-        <div class="panel-heading row">
-            <div class="col-lg-10">Alarma - Sistema {{ alert.system }}</div><div class="col-lg-2 text-right right">{{ alert.timestamp | date: 'dd/MM/yyyy HH:mm'}}</div> </div>
-        <div class="panel-body">
-            <p>Esto es una alarma</p>
+    <div ng-show="filterNotifications == '' || filterNotifications == 'alerts'" ng-repeat="alert in notifications.alerts | orderBy:'+':true">
+        <div class="panel panel-danger animated-alert col-lg-12">
+            <div class="panel-heading row">
+                <div class="col-lg-10">Alarma - Sistema {{ alert.system }}</div><div class="col-lg-2 text-right right">{{ alert.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
+            <div class="panel-body">
+                <p>{{ alert.data }}</p>
+            </div>
         </div>
     </div>
 
-    <div ng-repeat="warning in notifications.warnings | orderBy:'+':true" class="panel panel-warning animated-warning col-lg-12">
-        <div class="panel-heading row">
-            <div class="col-lg-10">Alerta - Sistema {{ warning.system }}</div> <div class="col-lg-2 text-right right">{{ warning.timestamp | date: 'dd/MM/yyyy HH:mm'}}</div> </div>
-        <div class="panel-body">
-            <p>Esto es una alerta</p>
+    <div ng-show="filterNotifications == '' || filterNotifications == 'warnings'" ng-repeat="warning in notifications.warnings | orderBy:'+':true">
+        <div class="panel panel-warning animated-warning col-lg-12">
+            <div class="panel-heading row">
+                <div class="col-lg-10">Alerta - Sistema {{ warning.system }}</div> <div class="col-lg-2 text-right right">{{ warning.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
+            <div class="panel-body">
+                <p>{{ warning.data }}</p>
+            </div>
         </div>
     </div>
 
-    <div ng-repeat="info in notifications.infos | orderBy:'+':true" class="panel panel-info animated-info col-lg-12">
-        <div class="panel-heading row">
-            <div class="col-lg-10">Aviso - Sistema {{ info.system }}</div> <div class="col-lg-2 text-right right">{{ info.timestamp | date: 'dd/MM/yyyy HH:mm'}}</div> </div>
-        <div class="panel-body">
-            <p>Esto es un aviso</p>
+    <div ng-show="filterNotifications == '' || filterNotifications == 'infos'" ng-repeat="info in notifications.infos | orderBy:'+':true">
+        <div class="panel panel-info animated-info col-lg-12">
+            <div class="panel-heading row">
+                <div class="col-lg-10">Aviso - Sistema {{ info.system }}</div> <div class="col-lg-2 text-right right">{{ info.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
+            <div class="panel-body">
+                <p>{{ info.data }}</p>
+            </div>
         </div>
     </div>
 
