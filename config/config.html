@@ -1,0 +1,186 @@
+<div class="container-fluid">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header navbar-left col-lg-1" uib-dropdown>
+                <button type="button" class="navbar-toggle collapsed" data-target="#user" aria-expanded="false" ng-click="isCollapsed = !isCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href class="navbar-brand"><!--<img src="images/logo-libredeuda-chico.PNG" height="30">-->Monitoreo</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="user" aria-expanded="false" uib-collapse="isCollapsed">
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li class="nav navbar-clock"><a href="#"><strong>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>-->
+                    <li class="nav"><a href="#"><i class="glyphicon glyphicon-wrench"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Configuración de tareas</h1>
+    </div>
+
+    <div class="col-lg-6">
+        <table class="table table-responsive table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>URL</th>
+                <th><i class="glyphicon glyphicon-zoom-in"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="outgoing in config.outgoings">
+                <td>{{ outgoing.name }}</td>
+                <td>{{ outgoing.completeUrl }}</td>
+                <td><a href ng-click="config.setOutgoing(outgoing)"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <form class="form-horizontal" ng-submit="config.saveOutgoing()">
+            <fieldset>
+                <legend>Nueva tarea</legend>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputNombre">Nombre</label>
+                            <input type="text" class="form-control" id="inputNombre" ng-model="config.editOutgoing.name" required>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 inline-input">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputType">Tipo</label>
+                            <select class="form-control" id="inputType" ng-model="config.editOutgoing.type">
+                                <option value="ERROR">Error</option>
+                                <option value="WARN">Advertencia</option>
+                                <option value="INFO">Info</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputDir">IP</label>
+                            <input type="text" class="form-control" id="inputDir" ng-model="config.editOutgoing.req.url" required>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 inline-input">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputPort">Puerto</label>
+                            <input type="text" class="form-control" id="inputPort" ng-model="config.editOutgoing.req.port" required>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 inline-input">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputPath">Ruta</label>
+                            <input type="text" class="form-control" id="inputPath" ng-model="config.editOutgoing.req.path" required>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="checkbox col-lg-2">
+                        <label>
+                            <input type="checkbox" class="checkbox" ng-model="config.editOutgoing.mail.status"> Enviar mail
+                        </label>
+                    </div>
+                    <div class="form-group col-lg-5 inline-input">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputPeriod">Por:</label>
+                            <select class="form-control" id="inputPeriod" ng-model="config.editOutgoing.mail.period">
+                                <option value="minute">Minuto</option>
+                                <option value="hour">Hora</option>
+                                <option value="day">Día</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-5 inline-input">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputCount">Cantidad</label>
+                            <input type="number" class="form-control" id="inputCount" min="1" max="100" ng-model="config.editOutgoing.mail.count">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-responsive table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-8" colspan="7">Cada</th>
+                        <th class="col-xs-2 text-center">Repetir</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Segundos</td>
+                        <td colspan="7"><input type="number" class="form-control" min="{{ config.schedule.second.min }}" max="59" ng-model="config.schedule.second.value" ng-required="config.schedule.repeat == 0 || config.schedule.repeat > 4"></td>
+                        <td class="text-center"><input type="radio" name="repeatRadio" ng-model="config.schedule.repeat" ng-value="0" ng-click="config.setSchedule()" checked></td>
+                    </tr>
+                    <tr>
+                        <td>Minutos</td>
+                        <td colspan="7"><input type="number" class="form-control" min="{{ config.schedule.minute.min }}" max="59" ng-model="config.schedule.minute.value" ng-disabled="config.schedule.repeat < 1" ng-required="config.schedule.repeat == 1 || config.schedule.repeat > 4"></td>
+                        <td class="text-center"><input type="radio" name="repeatRadio" ng-model="config.schedule.repeat" ng-value="1" ng-click="config.setSchedule()"></td>
+                    </tr>
+                    <tr>
+                        <td>Hora</td>
+                        <td colspan="7"><input type="number" class="form-control" min="{{ config.schedule.hour.min }}" max="23" ng-model="config.schedule.hour.value" ng-disabled="config.schedule.repeat < 2" ng-required="config.schedule.repeat == 2 || config.schedule.repeat > 4"></td>
+                        <td class="text-center"><input type="radio" name="repeatRadio" ng-model="config.schedule.repeat" ng-value="2" ng-click="config.setSchedule()"></td>
+                    </tr>
+                    <tr>
+                        <td>Día</td>
+                        <td colspan="7"><input type="number" class="form-control" min="1" max="31" ng-model="config.schedule.day.value" ng-disabled="config.schedule.repeat < 3" ng-required="config.schedule.repeat == 3 || config.schedule.repeat > 4"></td>
+                        <td class="text-center"><input type="radio" name="repeatRadio" ng-model="config.schedule.repeat" ng-value="3" ng-click="config.setSchedule()"></td>
+                    </tr>
+                    <tr>
+                        <td>Mes</td>
+                        <td colspan="7"><input type="number" class="form-control" min="1" max="12" ng-model="config.schedule.month.value" ng-disabled="config.schedule.repeat < 4" ng-required="config.schedule.repeat >= 4"></td>
+                        <td class="text-center"><input type="radio" name="repeatRadio" ng-model="config.schedule.repeat" ng-value="4" ng-click="config.setSchedule()"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td ng-repeat="day in config.daysOfWeek">{{ day.day }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Día de semana</td>
+                        <td ng-repeat="day in config.daysOfWeek"><input type="checkbox" ng-model="day.repeat" ng-disabled="config.schedule.repeat > 4"></td>
+                        <td><label><input type="radio" name="repeatRadio" ng-model="config.schedule.repeat" ng-value="5" ng-click="config.setSchedule()"> No repetir</label></td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-save"></i> Guardar</button>
+                    <button type="button" class="btn btn-default" ng-click="config.resetForm()"><i class="glyphicon glyphicon-remove-circle"></i> Limpiar</button>
+                </div>
+
+            </fieldset>
+
+        </form>
+    </div>
+
+
+
+</div>

@@ -134,13 +134,17 @@ html, body {
 }
 
 
+.inline-input {
+    margin-left: auto !important;
+}
+
 @media (min-width:768px) { /* don't break navbar on small screen */
     .navbar-right {
         text-align: right !important;
     }
 
     .navbar-clock {
-        width: 100%;
+        width: 80%;
     }
 
     .navbar-center {

@@ -33,6 +33,10 @@ sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRou
 		url: '/alerts',
 		templateUrl: 'alerts/alerts.html',
 		controller: 'alertsCtrl'
+	}).state('config', {
+		url: '/config',
+		templateUrl: 'config/config.html',
+		controller: 'configCtrl as config'
 	})
 
 }]);
