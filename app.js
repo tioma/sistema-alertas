@@ -5,7 +5,8 @@ var sistemaAlertas = angular.module('sistemaAlertas', [
 	'ui.router',
 	'ui.bootstrap',
 	'btford.socket-io',
-	'ngAnimate'
+	'ngAnimate',
+	'ngTagsInput'
 ]);
 
 

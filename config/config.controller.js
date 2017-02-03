@@ -33,6 +33,8 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		};
 	};
 
+	vm.emailList = [];
+
 	vm.daysOfWeek = [
 		{ day: "D", repeat: false, value: 0 },
 		{ day: "L", repeat: false, value: 1 },
@@ -49,6 +51,13 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 	}).catch((error) => {
 		console.log(error);
 	});
+
+	vm.validateEmail = (email) => {
+		console.log(email);
+		const re = /^(([^<>()[\]{}'^?\\.,!|//#%*-+=&;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+		console.log(re.test(email));
+		return re.test(email.text);
+	};
 
 	vm.setSchedule = () => {
 		switch (vm.schedule.repeat){
@@ -104,6 +113,12 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		vm.daysOfWeek.forEach((day) => {
 			day.repeat = (vm.editOutgoing.cron.dayOfWeek.indexOf(day.value) != -1);
 		});
+		let mail;
+		vm.emailList = [];
+		vm.editOutgoing.mail.accounts.forEach((account) => {
+			mail = { text: account };
+			vm.emailList.push(mail);
+		});
 		vm.resetSchedule();
 		if (angular.isDefined(vm.editOutgoing.cron.second)){
 			vm.schedule.second.value = vm.editOutgoing.cron.second;
@@ -133,7 +148,8 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		vm.resetSchedule();
 		vm.daysOfWeek.forEach((day) => {
 			day.repeat = false;
-		})
+		});
+		vm.emailList = [];
 	};
 
 	vm.saveOutgoing = () => {
@@ -144,10 +160,10 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		if (vm.schedule.repeat <= 4 && daysRepeat > 0){
 			vm.editOutgoing.schedule = vm.schedule;
 			vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
+			vm.editOutgoing.mailList = vm.emailList;
 			vm.editOutgoing.save().then((data) => {
 				dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
-				vm.editOutgoing = new Outgoing();
-				vm.resetSchedule();
+				vm.resetForm();
 			}).catch((error) => {
 				console.log(error);
 				dialogsService.error('Monitoreo', `Se produjo un error al intentar guardar los cambios. ${error}`)

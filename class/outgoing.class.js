@@ -76,6 +76,13 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			});
 		}
 
+		set mailList(mailList){
+			this.mail.accounts = [];
+			mailList.forEach((mail) => {
+				this.mail.accounts.push(mail.text);
+			});
+		}
+
 		get completeUrl(){
 			return `${this.req.url}:${this.req.port}${this.req.path}`;
 		}
