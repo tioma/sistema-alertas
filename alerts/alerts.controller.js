@@ -52,4 +52,8 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 
 		$scope.notifications.removeNotifications();
 
+		$scope.$on('$destroy', () => {
+			$scope.notifications.cancelControl();
+		})
+
 	}]);

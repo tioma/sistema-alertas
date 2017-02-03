@@ -32,9 +32,12 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 		update(){
 			const deferred = $q.defer();
 			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing/${this.name}/change`;
-			$http.post(inserturl, this).then((response) => {
-				console.log(response);
-				deferred.resolve(response.data);
+			$http.put(inserturl, this).then((response) => {
+				if (response.data.status == 'OK'){
+					deferred.resolve(response.data);
+				} else {
+					deferred.reject(response.data);
+				}
 			}).catch((response) => {
 				deferred.reject(response.data);
 			});

@@ -18,7 +18,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 	this.alerts = [];
 
 	this.removeNotifications = () => {
-		$timeout(() => {
+		this.controlPromise = $timeout(() => {
 			console.log('chequeamos arrays');
 			if (this.infos.length > this.infosMax){
 				this.infos.splice(0, this.infos.length-this.infosMax);
@@ -31,6 +31,11 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			}
 			this.removeNotifications();
 		}, 1500);
+	};
+
+	this.cancelControl = () => {
+		console.log('cancelamos ejecucion timeout');
+		$timeout.cancel(this.controlPromise);
 	};
 
 	this.setInfoNotif = (data) => {

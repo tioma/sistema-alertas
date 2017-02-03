@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 01/02/2017.
  */
-sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', function(configFactory, Outgoing){
+sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsService', function(configFactory, Outgoing, dialogsService){
 
 	const vm = this;
 
@@ -145,9 +145,12 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', function(c
 			vm.editOutgoing.schedule = vm.schedule;
 			vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
 			vm.editOutgoing.save().then((data) => {
-				console.log(data);
+				dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
+				vm.editOutgoing = new Outgoing();
+				vm.resetSchedule();
 			}).catch((error) => {
-				console.log(error)
+				console.log(error);
+				dialogsService.error('Monitoreo', `Se produjo un error al intentar guardar los cambios. ${error}`)
 			});
 		} else {
 			console.log('no te guardo nada porque tenes que marcar al menos 1 dia');

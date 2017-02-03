@@ -21,7 +21,7 @@
         </div>
     </nav>
 
-    <div class="page-header">
+    <div class="row col-lg-12 page-header">
         <h1>Configuración de tareas</h1>
     </div>
 
@@ -48,7 +48,7 @@
             <fieldset>
                 <legend>Nueva tarea</legend>
                 <div class="row">
-                    <div class="form-group col-lg-6">
+                    <div class="form-group col-lg-4">
                         <div class="input-group">
                             <label class="input-group-addon" for="inputNombre">Nombre</label>
                             <input type="text" class="form-control" id="inputNombre" ng-model="config.editOutgoing.name" required>
@@ -57,7 +57,17 @@
                         </span>
                         </div>
                     </div>
-                    <div class="form-group col-lg-6 inline-input">
+                    <div class="form-group col-lg-4 inline-input">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputGroup">Grupo</label>
+                            <select class="form-control" id="inputGroup" ng-model="config.editOutgoing.group">
+                                <option value="grupo1">Grupo 1</option>
+                                <option value="grupo2">Grupo 2</option>
+                                <option value="grupo3">Grupo 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 inline-input">
                         <div class="input-group">
                             <label class="input-group-addon" for="inputType">Tipo</label>
                             <select class="form-control" id="inputType" ng-model="config.editOutgoing.type">
@@ -65,6 +75,17 @@
                                 <option value="WARN">Advertencia</option>
                                 <option value="INFO">Info</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputDesc">Descripción</label>
+                            <input type="text" class="form-control" id="inputDesc" ng-model="config.editOutgoing.description">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
                         </div>
                     </div>
                 </div>
@@ -81,7 +102,7 @@
                     <div class="form-group col-lg-4 inline-input">
                         <div class="input-group">
                             <label class="input-group-addon" for="inputPort">Puerto</label>
-                            <input type="text" class="form-control" id="inputPort" ng-model="config.editOutgoing.req.port" required>
+                            <input type="number" class="form-control" id="inputPort" min="0" max="9999" ng-model="config.editOutgoing.req.port" required>
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
                         </span>
