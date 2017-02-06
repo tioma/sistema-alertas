@@ -26,6 +26,8 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 		});
 
 		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_ISALIVE, (event, data) => {
+			console.log('is alive');
+			console.log(data);
 			$scope.lastControl = data;
 		});
 

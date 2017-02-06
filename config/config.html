@@ -32,6 +32,7 @@
                 <th>Nombre</th>
                 <th>URL</th>
                 <th><i class="glyphicon glyphicon-zoom-in"></i></th>
+                <th class="text-center"><i class="glyphicon glyphicon-edit"></i></th>
             </tr>
             </thead>
             <tbody>
@@ -39,6 +40,10 @@
                 <td>{{ outgoing.name }}</td>
                 <td>{{ outgoing.completeUrl }}</td>
                 <td><a href ng-click="config.setOutgoing(outgoing)"><i class="glyphicon glyphicon-zoom-in"></i></a></td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="outgoing.enable()" ng-hide="outgoing.status" title="Habilitar tarea"><i class="glyphicon glyphicon-check"></i></button>
+                    <button type="button" class="btn btn-danger btn-xs" ng-click="outgoing.disable()" ng-show="outgoing.status" title="Deshabilitar tarea"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -67,7 +72,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-lg-4 inline-input">
+                    <div class="form-group col-lg-3 inline-input">
                         <div class="input-group">
                             <label class="input-group-addon" for="inputType">Tipo</label>
                             <select class="form-control" id="inputType" ng-model="config.editOutgoing.type">
@@ -76,6 +81,11 @@
                                 <option value="INFO">Info</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="checkbox col-lg-1">
+                        <label>
+                            <input type="checkbox" class="checkbox" ng-model="config.editOutgoing.status"> Habilitar
+                        </label>
                     </div>
                 </div>
                 <div class="row">
