@@ -17,7 +17,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 				};
 				this.type = 'ERROR';
 				this.res = {
-					status: '',
+					status: 200,
 					description: ''
 				};
 				this.mail = {
@@ -34,6 +34,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing/${this.name}/change`;
 			$http.put(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
+					response.data.task = 'update';
 					deferred.resolve(response.data);
 				} else {
 					deferred.reject(response.data);
@@ -46,7 +47,17 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		addNew(){
 			const deferred = $q.defer();
-			deferred.resolve();
+			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing`;
+			$http.post(inserturl, this).then((response) => {
+				if (response.data.status == 'OK'){
+					response.data.task = 'new';
+					deferred.resolve(response.data);
+				} else {
+					deferred.reject(response.data);
+				}
+			}).catch((response) => {
+				deferred.reject(response.data);
+			});
 			return deferred.promise;
 		}
 

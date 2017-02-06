@@ -144,7 +144,30 @@
                         </div>
                     </div>
                 </div>
-                    <tags-input ng-model="config.emailList" min-length="1" placeholder="Agregue una dirección de email" on-tag-adding="config.validateEmail($tag)"></tags-input>
+                <div class="row">
+                    <div class="form-group  col-lg-12">
+                        <div class="input-group col-lg-12">
+                            <tags-input
+                                    id="inputMails"
+                                    ng-model="config.emailList"
+                                    min-length="1"
+                                    placeholder="Agregue una dirección de email"
+                                    on-tag-adding="config.validateEmail($tag)"
+                            ></tags-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <div class="input-group">
+                            <label class="input-group-addon" for="inputMsg">Mensaje</label>
+                            <input type="text" class="form-control" id="inputMsg" ng-model="config.editOutgoing.res.description">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
                 <table class="table table-responsive table-striped table-hover">
                     <thead>
                     <tr>

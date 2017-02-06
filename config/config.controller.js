@@ -5,6 +5,14 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 
 	const vm = this;
 
+	function checkMailList(){
+		if (vm.emailList.length == 0) {
+			return !vm.editOutgoing.mail.status;
+		} else {
+			return true;
+		}
+	}
+
 	vm.editOutgoing = new Outgoing();
 
 	vm.outgoings = [];
@@ -152,24 +160,34 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		vm.emailList = [];
 	};
 
+
+
 	vm.saveOutgoing = () => {
 		let daysRepeat = 0;
 		vm.daysOfWeek.forEach((day) => {
 			if (day.repeat) daysRepeat++;
 		});
-		if (vm.schedule.repeat <= 4 && daysRepeat > 0){
-			vm.editOutgoing.schedule = vm.schedule;
-			vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
-			vm.editOutgoing.mailList = vm.emailList;
-			vm.editOutgoing.save().then((data) => {
-				dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
-				vm.resetForm();
-			}).catch((error) => {
-				console.log(error);
-				dialogsService.error('Monitoreo', `Se produjo un error al intentar guardar los cambios. ${error}`)
-			});
+
+		if (checkMailList()){
+			if (vm.schedule.repeat <= 4 && daysRepeat > 0){
+				vm.editOutgoing.schedule = vm.schedule;
+				vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
+				vm.editOutgoing.mailList = vm.emailList;
+				vm.editOutgoing.save().then((data) => {
+					dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
+					if (data.task == 'new'){
+						vm.outgoings.push(data.data);
+					}
+					vm.resetForm();
+				}).catch((error) => {
+					console.log(error);
+					dialogsService.error('Monitoreo', `Se produjo un error al intentar guardar los cambios. ${error}`)
+				});
+			} else {
+				dialogsService.notify('Monitoreo', 'Debe especificar qué días de la semana debe ejecutarse la tarea.');
+			}
 		} else {
-			console.log('no te guardo nada porque tenes que marcar al menos 1 dia');
+			dialogsService.notify('Monitoreo', 'Al activar el envío de mails, se debe especificar al menos una dirección válida donde enviarlo');
 		}
 
 	};
