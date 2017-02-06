@@ -51,6 +51,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			$http.post(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'new';
+					this._id = response.data.data._id;
 					deferred.resolve(response.data);
 				} else {
 					deferred.reject(response.data);
@@ -61,13 +62,27 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			return deferred.promise;
 		}
 
-		//post /outgoing/:name/change
 		save(){
 			if (this._id){
 				return this.update();
 			} else {
 				return this.addNew()
 			}
+		}
+
+		remove(){
+			const deferred = $q.defer();
+			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing`;
+			$http.delete(inserturl, {params: {_id: this._id}}).then((response) => {
+				if (response.data.status == 'OK'){
+					deferred.resolve(response.data);
+				} else {
+					deferred.reject(response.data);
+				}
+			}).catch((response) => {
+				deferred.reject(response.data);
+			});
+			return deferred.promise;
 		}
 
 

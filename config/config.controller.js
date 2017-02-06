@@ -13,6 +13,15 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		}
 	}
 
+	function getOutgoings(){
+		configFactory.getOutgoings().then((data) => {
+			console.log(data);
+			vm.outgoings = data;
+		}).catch((error) => {
+			console.log(error);
+		});
+	}
+
 	vm.editOutgoing = new Outgoing();
 
 	vm.outgoings = [];
@@ -52,13 +61,6 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		{ day: "V", repeat: false, value: 5 },
 		{ day: "S", repeat: false, value: 6 }
 	];
-
-	configFactory.getOutgoings().then((data) => {
-		console.log(data);
-		vm.outgoings = data;
-	}).catch((error) => {
-		console.log(error);
-	});
 
 	vm.validateEmail = (email) => {
 		console.log(email);
@@ -161,6 +163,17 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 	};
 
 
+	vm.deleteOutgoing = () => {
+		const question = dialogsService.confirm('Monitoreo', `¿Desea eliminar la tarea ${vm.editOutgoing.name}?`);
+		question.result.then(() => {
+			vm.editOutgoing.remove().then((data) => {
+				getOutgoings();
+				vm.resetForm();
+			}).catch((error) => {
+				dialogsService.error('Monitoreo', `Se produjo un error al borrar la tarea. ${error.data}`);
+			});
+		})
+	};
 
 	vm.saveOutgoing = () => {
 		let daysRepeat = 0;
@@ -176,12 +189,12 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 				vm.editOutgoing.save().then((data) => {
 					dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
 					if (data.task == 'new'){
-						vm.outgoings.push(data.data);
+						vm.outgoings.push(vm.editOutgoing);
 					}
 					vm.resetForm();
 				}).catch((error) => {
 					console.log(error);
-					dialogsService.error('Monitoreo', `Se produjo un error al intentar guardar los cambios. ${error}`)
+					dialogsService.error('Monitoreo', `Se produjo un error al intentar guardar los cambios. ${error}`);
 				});
 			} else {
 				dialogsService.notify('Monitoreo', 'Debe especificar qué días de la semana debe ejecutarse la tarea.');
@@ -193,5 +206,21 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 	};
 
 	vm.resetSchedule();
+	getOutgoings();
 
 }]);
+
+
+sistemaAlertas.directive('convertToNumber', function() {
+	return {
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function(val) {
+				return val != null ? parseInt(val, 10) : null;
+			});
+			ngModel.$formatters.push(function(val) {
+				return val != null ? '' + val : null;
+			});
+		}
+	};
+});

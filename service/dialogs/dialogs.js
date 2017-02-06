@@ -31,6 +31,20 @@ sistemaAlertas.service('dialogsService', ['$uibModal', function($uibModal){
                     }
                 }
             })
+        },
+        confirm: function(title, message) {
+            return $uibModal.open({
+                controller: 'dialogsCtrl',
+                templateUrl: './service/dialogs/confirm.html',
+                resolve: {
+                    title: function () {
+                        return title
+                    },
+                    message: function () {
+                        return message
+                    }
+                }
+            })
         }
     }
 
