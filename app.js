@@ -31,14 +31,22 @@ sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRou
 		url: '/login',
 		templateUrl: 'login/login.html',
 		controller: 'loginCtrl'
-	}).state('alerts', {
-		url: '/alerts',
-		templateUrl: 'alerts/alerts.html',
-		controller: 'alertsCtrl'
+	}).state('notifications', {
+		url: '/notifications/:filter',
+		templateUrl: 'notifications/notifications.html',
+		controller: 'notificationsCtrl'
 	}).state('config', {
 		url: '/config',
 		templateUrl: 'config/config.html',
 		controller: 'configCtrl as config'
+	}).state('config.outgoing', {
+		url: '/outgoings',
+		templateUrl: 'config/outgoings/outgoing.html',
+		controller: 'outgoingCtrl as vmOutgoings'
+	}).state('config.incoming', {
+		url: '/incomings',
+		templateUrl: 'config/incomings/incoming.html',
+		controller: 'incomingCtrl as vmIncoming'
 	})
 
 }]);

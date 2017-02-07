@@ -1,14 +1,13 @@
 /**
  * Created by kolesnikov-a on 11/11/2016.
  */
-sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', 'notificationService', 'clockService',
-	function($scope, Socket, API_ENDPOINTS, SOCKET_EVENTS, notificationService, clockService){
+sistemaAlertas.controller('notificationsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', 'notificationService', 'clockService', '$stateParams',
+	function($scope, Socket, API_ENDPOINTS, SOCKET_EVENTS, notificationService, clockService, $stateParams){
 
 		$scope.timer = clockService;
 		$scope.notifications = notificationService;
 
-		$scope.lastControl = null;
-		$scope.filterNotifications = '';
+		$scope.filterNotifications = $stateParams.filter;
 
 		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_ERR, (event, data) => {
 			console.log(data);
@@ -23,12 +22,6 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 
 		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_INFO, (event, data) => {
 			console.log(data);
-		});
-
-		$scope.$on(SOCKET_EVENTS.NOTIFICACIONES_ISALIVE, (event, data) => {
-			console.log('is alive');
-			console.log(data);
-			$scope.lastControl = data;
 		});
 
 		/*$scope.$on('terminales:invoice', (event, data) => {

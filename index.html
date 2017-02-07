@@ -26,12 +26,15 @@
     <script src="class/sockets.class.js"></script>
     <script src="class/outgoing.class.js"></script>
     <!-- CONTROLLERS -->
-    <script src="alerts/alerts.controller.js"></script>
+    <script src="notifications/notifications.controller.js"></script>
     <script src="config/config.controller.js"></script>
+    <script src="config/outgoings/outgoing.controller.js"></script>
+    <script src="config/incomings/incoming.controller.js"></script>
+    <script src="navigation/navigation.controller.js"></script>
     <!-- FACTORIES -->
     <script src="config/config.factory.js"></script>
     <!-- DIRECTIVES -->
-
+    <script src="navigation/navigation.directive.js"></script>
     <!-- SERVICES -->
     <script src="service/notification.service.js"></script>
     <script src="service/clock.service.js"></script>
@@ -45,6 +48,8 @@
     <!-- endbuild -->
 </head>
 <body class="container-fluid">
+
+<navigation-bar></navigation-bar>
 
 <div class="row wrapper">
     <div ui-view></div>
