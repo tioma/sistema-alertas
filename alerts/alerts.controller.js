@@ -31,7 +31,7 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 			$scope.lastControl = data;
 		});
 
-		$scope.$on('terminales:invoice', (event, data) => {
+		/*$scope.$on('terminales:invoice', (event, data) => {
 			console.log('invoice');
 			console.log(data);
 
@@ -50,7 +50,7 @@ sistemaAlertas.controller('alertsCtrl', ['$scope', 'Socket', 'API_ENDPOINTS', 'S
 			console.log(data);
 
 			$scope.notifications.setInfoNotif('Terminales', data);
-		});
+		});*/
 
 		$scope.notifications.removeNotifications();
 

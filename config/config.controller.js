@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 01/02/2017.
  */
-sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsService', function(configFactory, Outgoing, dialogsService){
+sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsService', 'clockService', function(configFactory, Outgoing, dialogsService, clockService){
 
 	const vm = this;
 
@@ -22,6 +22,7 @@ sistemaAlertas.controller('configCtrl', ['configFactory', 'Outgoing', 'dialogsSe
 		});
 	}
 
+	vm.timer = clockService;
 	vm.editOutgoing = new Outgoing();
 
 	vm.outgoings = [];

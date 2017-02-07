@@ -13,9 +13,9 @@
             </div>
 
             <div class="collapse navbar-collapse" id="user" aria-expanded="false" uib-collapse="isCollapsed">
-                <ul class="nav navbar-nav navbar-right">
-                    <!--<li class="nav navbar-clock"><a href="#"><strong>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>-->
-                    <li class="nav"><a href="#"><i class="glyphicon glyphicon-wrench"></i></a></li>
+                <ul class="nav navbar-nav navbar-right col-lg-2">
+                    <li class="nav navbar-clock"><a href><strong>{{ config.timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
+                    <li class="nav pull-right"><a href ui-sref="alerts"><i class="glyphicon glyphicon-bell" title="Notificaciones"></i></a></li>
                 </ul>
             </div>
         </div>

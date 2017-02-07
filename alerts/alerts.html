@@ -36,8 +36,8 @@
                     <li class="nav navbar-center" ng-hide="lastControl == null"><a href="#"><span ng-class="lastControl.status == 'ERROR' ? 'text-danger' : ''">Ultimo control: {{ lastControl.name }} - {{ lastControl.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right col-lg-2">
-                    <li class="nav navbar-clock"><a href="#"><strong>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
-                    <li class="nav"><a href="#" ui-sref="config"><i class="glyphicon glyphicon-wrench"></i></a></li>
+                    <li class="nav navbar-clock"><a href><strong>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
+                    <li class="nav pull-right"><a href ui-sref="config"><i class="glyphicon glyphicon-wrench" title="Configuración tareas"></i></a></li>
                 </ul>
             </div>
         </div>
