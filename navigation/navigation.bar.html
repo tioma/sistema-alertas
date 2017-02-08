@@ -1,13 +1,13 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header navbar-left col-lg-1" uib-dropdown>
-            <button type="button" class="navbar-toggle collapsed" data-target="#user" aria-expanded="false" ng-click="isCollapsed = !isCollapsed">
+            <button type="button" class="navbar-toggle collapsed" data-target="#user" aria-expanded="false" ng-click="vmNavigation.isCollapsed = !isCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href class="navbar-brand" ng-click="filterNotifications = ''"><!--<img src="images/logo-libredeuda-chico.PNG" height="30">-->Monitoreo</a>
+            <a href class="navbar-brand" ui-sref="notifications({filter: ''})"><!--<img src="images/logo-libredeuda-chico.PNG" height="30">-->Monitoreo</a>
         </div>
 
         <!--<div class="collapse navbar-collapse" id="register" aria-expanded="false" uib-collapse="isCollapsed" ng-if="!session.isAuthenticated()">
@@ -20,9 +20,9 @@
 
         <div class="collapse navbar-collapse" id="user" aria-expanded="false" uib-collapse="isCollapsed">
             <ul class="nav navbar-nav navbar-left col-lg-3">
-                <li class="nav"><a ui-sref="notifications({filter: 'info'})">Avisos <span class="badge">{{ notifications.infoCount }}</span></a></li>
-                <li class="nav"><a ui-sref="notifications({filter: 'warning'})">Alertas <span class="badge">{{ notifications.warningCount }}</span></a></li>
-                <li class="nav"><a ui-sref="notifications({filter: 'alert'})">Alarmas <span class="badge">{{ notifications.alertCount }}</span></a></li>
+                <li class="nav"><a ui-sref="notifications({filter: 'info'})">Avisos <span class="badge">{{ vmNavigation.notifications.infoCount }}</span></a></li>
+                <li class="nav"><a ui-sref="notifications({filter: 'warning'})">Alertas <span class="badge">{{ vmNavigation.notifications.warningCount }}</span></a></li>
+                <li class="nav"><a ui-sref="notifications({filter: 'alert'})">Alarmas <span class="badge">{{ vmNavigation.notifications.alertCount }}</span></a></li>
                 <!--<li class="dropdown open" uib-dropdown>
                     <a href="#" class="dropdown-toggle"  uib-dropdown-toggle data-toggle="dropdown" role="button" aria-expanded="true"><span uib-dropdown-toggle class="glyphicon glyphicon-user"></span> {{ session.getName() }} <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
@@ -31,10 +31,10 @@
                 </li>-->
             </ul>
             <ul class="nav navbar-nav col-lg-3">
-                <li class="nav navbar-center" ng-hide="lastControl == null"><a href="#"><span ng-class="lastControl.status == 'ERROR' ? 'text-danger' : ''">Ultimo control: {{ lastControl.name }} - {{ lastControl.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</span></a></li>
+                <li class="nav navbar-center" ng-hide="vmNavigation.notifications.lastControl == null"><a href="#"><span ng-class="vmNavigation.notifications.lastControl.status == 'ERROR' ? 'text-danger' : ''">Ultimo control: {{ vmNavigation.notifications.lastControl.name }} - {{ vmNavigation.notifications.lastControl.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</span></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right col-lg-5">
-                <li class="nav navbar-clock"><a href><strong>{{ timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
+                <li class="nav navbar-clock"><a href><strong>{{ vmNavigation.timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
                 <li class="nav pull-right" uib-dropdown>
                     <a href ng-hide="dropdown" uib-dropdown-toggle><i class="glyphicon glyphicon-wrench"></i> Configuración</a>
                     <ul class="dropdown-menu">

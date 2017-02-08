@@ -2,7 +2,7 @@
 
     <div class="page-header"></div>
 
-    <div ng-show="filterNotifications == '' || filterNotifications == 'alert'" ng-repeat="alert in notifications.alerts | orderBy:'+':true">
+    <div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'alert'" ng-repeat="alert in vmNotificaciones.notifications.alerts | orderBy:'+':true">
         <div class="panel panel-danger animated-alert col-lg-12">
             <div class="panel-heading row">
                 <div class="col-lg-10">Alarma - Sistema {{ alert.system }}</div><div class="col-lg-2 text-right right">{{ alert.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div ng-show="filterNotifications == '' || filterNotifications == 'warning'" ng-repeat="warning in notifications.warnings | orderBy:'+':true">
+    <div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'warning'" ng-repeat="warning in vmNotificaciones.notifications.warnings | orderBy:'+':true">
         <div class="panel panel-warning animated-warning col-lg-12">
             <div class="panel-heading row">
                 <div class="col-lg-10">Alerta - Sistema {{ warning.system }}</div> <div class="col-lg-2 text-right right">{{ warning.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div ng-show="filterNotifications == '' || filterNotifications == 'info'" ng-repeat="info in notifications.infos | orderBy:'+':true">
+    <div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'info'" ng-repeat="info in vmNotificaciones.notifications.infos | orderBy:'+':true">
         <div class="panel panel-info animated-info col-lg-12">
             <div class="panel-heading row">
                 <div class="col-lg-10">Aviso - Sistema {{ info.system }}</div> <div class="col-lg-2 text-right right">{{ info.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>

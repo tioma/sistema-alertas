@@ -3,7 +3,7 @@
  */
 sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout){
 
-	const socketNotification = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
+	this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
 
 	this.alertsMax = 7;
 	this.warningsMax = 5;
@@ -16,6 +16,28 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 	this.infos = [];
 	this.warnings = [];
 	this.alerts = [];
+
+	this.lastControl = null;
+
+	this.socket.connection.on('outgoing', (data) => {
+		if (data.type == 'ERROR'){
+			this.setAlertNotif(data);
+		} else if (data.type == "WARN"){
+			this.setWarningNotif(data);
+		} else {
+			this.setInfoNotif(data);
+		}
+
+	});
+
+	this.socket.connection.on('incoming', (data) => {
+		console.log('incoming');
+		console.log(data);
+	});
+
+	this.socket.connection.on('isAlive', (data) => {
+		this.lastControl = data;
+	});
 
 	this.removeNotifications = () => {
 		this.controlPromise = $timeout(() => {
@@ -86,7 +108,9 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			audio.remove(); //Remove when played.
 		};
 		document.body.appendChild(audio);
-	}
+	};
+
+	this.removeNotifications();
 
 
 }]);

@@ -12,9 +12,9 @@ sistemaAlertas.factory('Socket', ['socketFactory', function(socketFactory) {
 				//TODO definir mensajes de forward
 				console.log('socket conectado');
 
-				this.socket.forward('outgoing'); //eventos que hay que mostrar
-				this.socket.forward('incoming'); //alguna aplicación avisa algo
-				this.socket.forward('isAlive'); //el servicio está vivo
+				//this.socket.forward('outgoing'); //eventos que hay que mostrar
+				//this.socket.forward('incoming'); //alguna aplicación avisa algo
+				//this.socket.forward('isAlive'); //el servicio está vivo
 			});
 
 			this.socket.on('reconnect', () => {
@@ -29,6 +29,10 @@ sistemaAlertas.factory('Socket', ['socketFactory', function(socketFactory) {
 
 		emit(event, data){
 			this.socket.emit(event, data);
+		}
+
+		get connection(){
+			return this.socket;
 		}
 
 		//TODO ver si es necesario este metodo

@@ -5,6 +5,6 @@ sistemaAlertas.directive('navigationBar', [function(){
 	return {
 		restrict:		'E',
 		templateUrl:	'navigation/navigation.bar.html',
-		controller: 'navigationCtrl'
+		controller: 	'navigationCtrl as vmNavigation'
 	}
 }]);
