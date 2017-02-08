@@ -46,7 +46,7 @@ sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRou
 	}).state('config.incoming', {
 		url: '/incomings',
 		templateUrl: 'config/incomings/incoming.html',
-		controller: 'incomingCtrl as vmIncoming'
+		controller: 'incomingCtrl as vmIncomings'
 	})
 
 }]);

@@ -1,17 +1,9 @@
 /**
  * Created by kolesnikov-a on 01/02/2017.
  */
-sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogsService', 'clockService', function(configFactory, Outgoing, dialogsService, clockService){
+sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogsService', 'validatorService', function(configFactory, Outgoing, dialogsService, validatorService){
 
 	const vm = this;
-
-	function checkMailList(){
-		if (vm.emailList.length == 0) {
-			return !vm.editOutgoing.mail.status;
-		} else {
-			return true;
-		}
-	}
 
 	function getOutgoings(){
 		configFactory.getOutgoings().then((data) => {
@@ -22,6 +14,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		});
 	}
 
+	vm.validator = validatorService;
 	vm.editOutgoing = new Outgoing();
 
 	vm.outgoings = [];
@@ -61,13 +54,6 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		{ day: "V", repeat: false, value: 5 },
 		{ day: "S", repeat: false, value: 6 }
 	];
-
-	vm.validateEmail = (email) => {
-		console.log(email);
-		const re = /^(([^<>()[\]{}'^?\\.,!|//#%*-+=&;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-		console.log(re.test(email));
-		return re.test(email.text);
-	};
 
 	vm.setSchedule = () => {
 		switch (vm.schedule.repeat){
@@ -123,11 +109,9 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		vm.daysOfWeek.forEach((day) => {
 			day.repeat = (vm.editOutgoing.cron.dayOfWeek.indexOf(day.value) != -1);
 		});
-		let mail;
 		vm.emailList = [];
 		vm.editOutgoing.mail.accounts.forEach((account) => {
-			mail = { text: account };
-			vm.emailList.push(mail);
+			vm.emailList.push({ text: account });
 		});
 		vm.resetSchedule();
 		if (angular.isDefined(vm.editOutgoing.cron.second)){
@@ -181,7 +165,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 			if (day.repeat) daysRepeat++;
 		});
 
-		if (checkMailList()){
+		if (vm.validator.checkMailList(vm.emailList, vm.editOutgoing)){
 			if (vm.schedule.repeat <= 4 && daysRepeat > 0){
 				vm.editOutgoing.schedule = vm.schedule;
 				vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
