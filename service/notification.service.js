@@ -20,6 +20,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 	this.lastControl = null;
 
 	this.socket.connection.on('outgoing', (data) => {
+		console.log(data);
 		if (data.type == 'ERROR'){
 			this.setAlertNotif(data);
 		} else if (data.type == "WARN"){
@@ -55,17 +56,17 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		}, 1500);
 	};
 
-	this.cancelControl = () => {
+	/*this.cancelControl = () => {
 		console.log('cancelamos ejecucion timeout');
 		$timeout.cancel(this.controlPromise);
-	};
+	};*/
 
 	this.setInfoNotif = (data) => {
 		this.infoCount++;
 
 		let info = {
 			system: data.name,
-			data: data.message,
+			data: data.description,
 			timestamp: data.fecha
 		};
 
@@ -78,7 +79,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 		let warning = {
 			system: data.name,
-			data: data.data,
+			data: data.description,
 			timestamp: data.fecha
 		};
 
@@ -91,7 +92,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 		let alert = {
 			system: data.name,
-			data: data.message,
+			data: data.description,
 			timestamp: data.fecha
 		};
 

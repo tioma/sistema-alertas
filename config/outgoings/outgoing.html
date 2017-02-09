@@ -128,17 +128,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="header in vmOutgoings.editOutgoing.req.headers track by $index">
+                        <tr ng-repeat="header in vmOutgoings.headersList track by $index">
                             <td><input type="text" class="form-control" ng-model="header.name"></td>
                             <td><input type="text" class="form-control" ng-model="header.value"></td>
-                            <td class="text-center"><button type="button" class="btn btn-xs btn-danger" title="Eliminar Header" ng-click="vmOutgoings.editOutgoing.removeHeader($index)"><i class="glyphicon glyphicon-remove"></i></button></td>
+                            <td class="text-center"><button type="button" class="btn btn-xs btn-danger" title="Eliminar Header" ng-click="vmOutgoings.removeHeader($index)"><i class="glyphicon glyphicon-remove"></i></button></td>
                         </tr>
                         </tbody>
                         <tfoot>
                         <tr>
                             <td></td>
                             <td></td>
-                            <td class="text-center"><button type="button" class="btn btn-xs btn-primary" title="Agregar Header" ng-click="vmOutgoings.editOutgoing.addHeader()"><i class="glyphicon glyphicon-copy"></i></button></td>
+                            <td class="text-center"><button type="button" class="btn btn-xs btn-primary" title="Agregar Header" ng-click="vmOutgoings.addHeader()"><i class="glyphicon glyphicon-copy"></i></button></td>
                         </tr>
                         </tfoot>
                     </table>

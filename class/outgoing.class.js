@@ -32,15 +32,6 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			}
 		}
 
-		removeHeader(index){
-			this.req.headers.splice(index, 1);
-		}
-
-		addHeader(){
-			this.req.headers.push({name: '', value: ''});
-			console.log(this.req.headers);
-		}
-
 		enable(){
 			this.status = true;
 			this.update();
@@ -129,6 +120,14 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			mailList.forEach((mail) => {
 				this.mail.accounts.push(mail.text);
 			});
+		}
+
+		set headers(headersList){
+			this.req.headers = {};
+			headersList.forEach((header) => {
+				this.req.headers[header.name] = header.value;
+			});
+			console.log(this.req.headers);
 		}
 
 		get completeUrl(){

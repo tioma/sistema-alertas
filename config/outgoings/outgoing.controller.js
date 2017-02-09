@@ -44,6 +44,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 	};
 
 	vm.emailList = [];
+	vm.headersList = [];
 
 	vm.daysOfWeek = [
 		{ day: "D", repeat: false, value: 0 },
@@ -54,6 +55,14 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		{ day: "V", repeat: false, value: 5 },
 		{ day: "S", repeat: false, value: 6 }
 	];
+
+	vm.addHeader = () => {
+		vm.headersList.push({name: '', value: ''});
+	};
+
+	vm.removeHeader = (index) => {
+		vm.headersList.splice(index, 1)
+	};
 
 	vm.setSchedule = () => {
 		switch (vm.schedule.repeat){
@@ -113,6 +122,15 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		vm.editOutgoing.mail.accounts.forEach((account) => {
 			vm.emailList.push({ text: account });
 		});
+		vm.headersList = [];
+		for (var property in vm.editOutgoing.req.headers) {
+			if (vm.editOutgoing.req.headers.hasOwnProperty(property)) {
+				vm.headersList.push({
+					name: property,
+					value: vm.editOutgoing.req.headers[property]
+				})
+			}
+		}
 		vm.resetSchedule();
 		if (angular.isDefined(vm.editOutgoing.cron.second)){
 			vm.schedule.second.value = vm.editOutgoing.cron.second;
@@ -144,6 +162,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 			day.repeat = false;
 		});
 		vm.emailList = [];
+		vm.headersList = [];
 	};
 
 
@@ -170,6 +189,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 				vm.editOutgoing.schedule = vm.schedule;
 				vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
 				vm.editOutgoing.mailList = vm.emailList;
+				vm.editOutgoing.headers = vm.headersList;
 				vm.editOutgoing.save().then((data) => {
 					dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
 					if (data.task == 'new'){
