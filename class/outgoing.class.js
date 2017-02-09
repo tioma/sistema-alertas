@@ -8,9 +8,12 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 		constructor(outgoingData){
 			if (outgoingData){
 				angular.extend(this, outgoingData);
+				if (!this.req.headers) this.req.headers = [];
 			} else {
 				this.name = '';
 				this.req = {
+					headers: [],
+					method: 'GET',
 					url: '',
 					port: '',
 					path: ''
@@ -27,6 +30,15 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 					accounts: []
 				}
 			}
+		}
+
+		removeHeader(index){
+			this.req.headers.splice(index, 1);
+		}
+
+		addHeader(){
+			this.req.headers.push({name: '', value: ''});
+			console.log(this.req.headers);
 		}
 
 		enable(){
