@@ -40,6 +40,45 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		this.lastControl = data;
 	});
 
+	this.socket.connection.on('connect', () => {
+		this.lastControl = {
+			name: 'Conexión establecida',
+			type: 'INFO',
+			fecha: new Date()
+		}
+	});
+
+	this.socket.connection.on('disconnect', () => {
+		let data = {
+			name: 'Monitoreo',
+			description: 'Se ha perdido la conexion con el servidor de monitoreo.',
+			fecha: new Date()
+		};
+		this.setAlertNotif(data);
+	});
+
+	this.socket.connection.on('connect_error', () => {
+		let data = {
+			name: 'Monitoreo',
+			description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
+			fecha: new Date()
+		};
+		this.setAlertNotif(data);
+	});
+
+	this.socket.connection.on('reconnect', (attempt) => {
+		console.log('reconexión intento: ' + attempt);
+	});
+
+	this.socket.connection.on('reconnect_attempt', () => {
+		console.log('intentando reconectar');
+		this.lastControl = {
+			name: 'Intentando reconectar...',
+			fecha: new Date(),
+			type: 'INFO'
+		}
+	});
+
 	this.removeNotifications = () => {
 		this.controlPromise = $timeout(() => {
 			console.log('chequeamos arrays');

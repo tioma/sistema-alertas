@@ -8,7 +8,7 @@ sistemaAlertas.factory('Socket', ['socketFactory', function(socketFactory) {
 			let ioSocket = io.connect(api_endpoint, { transports: ['polling', 'websocket', 'xhr-polling']});
 			this.socket = socketFactory({ioSocket: ioSocket, prefix: prefix});
 
-			this.socket.on('connect', () => {
+			/*this.socket.on('connect', () => {
 				//TODO definir mensajes de forward
 				console.log('socket conectado');
 
@@ -17,14 +17,19 @@ sistemaAlertas.factory('Socket', ['socketFactory', function(socketFactory) {
 				//this.socket.forward('isAlive'); //el servicio está vivo
 			});
 
+			this.socket.on('connect_failed', () => {
+				console.log('falló la conexiónnnnnnn');
+			});
+
 			this.socket.on('reconnect', () => {
 				//TODO definir protocolo en caso de reconeccion
+				console.log('reconectamosssssss');
 			});
 
 			this.socket.on('disconnect', () => {
 				//TODO definir protocolo en caso de desconección
 				console.log('socket se desconecto');
-			})
+			})*/
 		}
 
 		emit(event, data){
