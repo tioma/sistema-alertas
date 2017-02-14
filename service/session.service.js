@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 04/05/2016.
  */
-sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '$q', function(storageService, $http, API_ENDPOINTS, $q){
+sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '$q', '$state', function(storageService, $http, API_ENDPOINTS, $q, $state){
 
     class Session {
         constructor(){
@@ -92,6 +92,7 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
             };
             storageService.deleteKey('user');
             storageService.deleteKey('token');
+            $state.transitionTo('login');
         }
     }
 

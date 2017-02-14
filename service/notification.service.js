@@ -17,6 +17,18 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 	this.init = () => {
 
+		this.infoCount = 0;
+		this.warningCount = 0;
+		this.alertCount = 0;
+
+		this.infos = [];
+		this.warnings = [];
+		this.alerts = [];
+
+		this.lastControl = null;
+
+		this.watchedSystems = [];
+
 		Session.tasks.forEach((task) => {
 			this.watchedSystems.push({system: task, list: [
 				new Notification({fecha: new Date(), type:'ERROR'}),
