@@ -25,12 +25,12 @@ sistemaAlertas.constant('SOCKET_EVENTS', {
 
 
 sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRouterProvider, $stateProvider){
-	$urlRouterProvider.otherwise('/notifications/');
+	$urlRouterProvider.otherwise('/login');
 
 	$stateProvider.state('login', {
 		url: '/login',
 		templateUrl: 'login/login.html',
-		controller: 'loginCtrl'
+		controller: 'loginCtrl as loginVm'
 	}).state('notifications', {
 		url: '/notifications/:filter',
 		templateUrl: 'notifications/notifications.html',
@@ -106,9 +106,10 @@ sistemaAlertas.config(['$provide', '$httpProvider', function($provide, $httpProv
 }]);
 
 
-sistemaAlertas.run(['$rootScope', 'notificationService', 'clockService',
-	function($rootScope, notificationService, clockService){
+sistemaAlertas.run(['$rootScope',
+	function($rootScope){
 
+		$rootScope.loginScreen = true;
 		//$rootScope.notifications = notificationService;
 		//$rootScope.timer = clockService;
 
@@ -210,13 +211,13 @@ sistemaAlertas.run(['$rootScope', 'notificationService', 'clockService',
 		$rootScope.socket = appSocket;
 		$rootScope.socket.connect();
 
-		$rootScope.loginScreen = true;
+		$rootScope.loginScreen = true;*/
 
 		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromParams) {
 			$rootScope.loginScreen = (toState.name == 'login');
 		});
 
-		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+		/*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 
 			if (angular.isDefined(toState.data)){ //state requires logged user
 				var authorizedRoles = toState.data.authorizedRoles;

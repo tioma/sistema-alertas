@@ -1,13 +1,7 @@
 /**
  * Created by kolesnikov-a on 14/11/2016.
  */
-sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout){
-
-	this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
-
-	this.alertsMax = 7;
-	this.warningsMax = 5;
-	this.infosMax = 5;
+sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', 'Session', 'Notification', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout, Session, Notification){
 
 	this.infoCount = 0;
 	this.warningCount = 0;
@@ -19,67 +13,83 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 	this.lastControl = null;
 
-	this.socket.connection.on('outgoing', (data) => {
-		console.log(data);
-		if (data.type == 'ERROR'){
+	this.watchedSystems = [];
+
+	this.init = () => {
+
+		Session.tasks.forEach((task) => {
+			this.watchedSystems.push({system: task, list: [
+				new Notification({fecha: new Date(), type:'ERROR'}),
+				new Notification({fecha: new Date(), type: 'WARN'}),
+				new Notification({fecha: new Date(), type: 'INFO'}),
+				new Notification({fecha: new Date(), type: 'ERROR'})]});
+		});
+
+		this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
+
+		this.socket.connection.on('outgoing', (data) => {
+			console.log(data);
+			/*if (data.type == 'ERROR'){
+				this.setAlertNotif(data);
+			} else if (data.type == "WARN"){
+				this.setWarningNotif(data);
+			} else {
+				this.setInfoNotif(data);
+			}*/
+
+		});
+
+		this.socket.connection.on('incoming', (data) => {
+			console.log('incoming');
+			console.log(data);
+		});
+
+		this.socket.connection.on('isAlive', (data) => {
+			this.lastControl = data;
+		});
+
+		this.socket.connection.on('connect', () => {
+			this.lastControl = {
+				name: 'Conexión establecida',
+				type: 'INFO',
+				fecha: new Date()
+			}
+		});
+
+		this.socket.connection.on('disconnect', () => {
+			let data = {
+				name: 'Monitoreo',
+				description: 'Se ha perdido la conexion con el servidor de monitoreo.',
+				fecha: new Date()
+			};
 			this.setAlertNotif(data);
-		} else if (data.type == "WARN"){
-			this.setWarningNotif(data);
-		} else {
-			this.setInfoNotif(data);
-		}
+		});
 
-	});
+		this.socket.connection.on('connect_error', () => {
+			let data = {
+				name: 'Monitoreo',
+				description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
+				fecha: new Date()
+			};
+			this.setAlertNotif(data);
+		});
 
-	this.socket.connection.on('incoming', (data) => {
-		console.log('incoming');
-		console.log(data);
-	});
+		this.socket.connection.on('reconnect', (attempt) => {
+			console.log('reconexión intento: ' + attempt);
+		});
 
-	this.socket.connection.on('isAlive', (data) => {
-		this.lastControl = data;
-	});
+		this.socket.connection.on('reconnect_attempt', () => {
+			console.log('intentando reconectar');
+			this.lastControl = {
+				name: 'Intentando reconectar...',
+				fecha: new Date(),
+				type: 'INFO'
+			}
+		});
 
-	this.socket.connection.on('connect', () => {
-		this.lastControl = {
-			name: 'Conexión establecida',
-			type: 'INFO',
-			fecha: new Date()
-		}
-	});
+	};
 
-	this.socket.connection.on('disconnect', () => {
-		let data = {
-			name: 'Monitoreo',
-			description: 'Se ha perdido la conexion con el servidor de monitoreo.',
-			fecha: new Date()
-		};
-		this.setAlertNotif(data);
-	});
-
-	this.socket.connection.on('connect_error', () => {
-		let data = {
-			name: 'Monitoreo',
-			description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
-			fecha: new Date()
-		};
-		this.setAlertNotif(data);
-	});
-
-	this.socket.connection.on('reconnect', (attempt) => {
-		console.log('reconexión intento: ' + attempt);
-	});
-
-	this.socket.connection.on('reconnect_attempt', () => {
-		console.log('intentando reconectar');
-		this.lastControl = {
-			name: 'Intentando reconectar...',
-			fecha: new Date(),
-			type: 'INFO'
-		}
-	});
-
-	this.removeNotifications = () => {
+	/*this.removeNotifications = () => {
 		this.controlPromise = $timeout(() => {
 			console.log('chequeamos arrays');
 			if (this.infos.length > this.infosMax){
@@ -93,7 +103,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			}
 			this.removeNotifications();
 		}, 1500);
-	};
+	};*/
 
 	/*this.cancelControl = () => {
 		console.log('cancelamos ejecucion timeout');
@@ -128,14 +138,27 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 	this.setAlertNotif = (data) => {
 		this.alertCount++;
-
-		let alert = {
-			system: data.name,
-			data: data.description,
+		let repeated = false;
+		let message = {
+			description: data.description,
 			timestamp: data.fecha
 		};
 
-		this.alerts.push(alert);
+		this.alerts.forEach((alert) => {
+			if (alert.system == data.name){
+				alert.messages.push(message);
+				repeated = true;
+			}
+		});
+
+		if (!repeated){
+			let alert = {
+				system: data.name,
+				messages: [message]
+			};
+			this.alerts.push(alert);
+		}
+
 		this.playNotifSound('audio/tonoAlarma.mp3');
 	};
 
@@ -150,7 +173,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		document.body.appendChild(audio);
 	};
 
-	this.removeNotifications();
+	//this.removeNotifications();
 
 
 }]);

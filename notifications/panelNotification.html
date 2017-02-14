@@ -1,0 +1,24 @@
+<div class="{{ panelWidth }}">
+    <div class="panel panel-primary {{ panelHeigth }}">
+        <div class="panel-heading">
+            {{ system.system }}
+        </div>
+        <div class="panel-body">
+            <div ng-repeat="notification in system.list" class="notification-container">
+                <div class="notification-card">
+                    <div class="notification-image">
+                        <div class="{{ notification.class }}"><i class="glyphicon glyphicon-warning-sign"></i> </div>
+                    </div>
+                    <div class="notification-card-title">
+                        <h4 class="notification-text-title"><span style="background-color: #ffffff">&nbsp;Servicio REST de página Control de Terminales&nbsp;</span></h4>
+                        <h5 class="notification-subtitle">CODE &nbsp;&nbsp;<i class="glyphicon glyphicon-calendar"></i> {{ notification.fecha | date: 'dd/MM/yyyy' }} &nbsp;<i class="glyphicon glyphicon-time"></i> {{ notification.fecha | date: 'HH:mm:ss' }} &nbsp; &nbsp;<i ng-show="notification.mail" class="text-success glyphicon glyphicon-envelope" style="font-size: 10px"></i> </h5>
+                    </div>
+                    <div class="notification-card-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Mauris sagittis pellentesque lacus eleifend lacinia...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

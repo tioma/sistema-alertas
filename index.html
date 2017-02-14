@@ -2,7 +2,8 @@
 <html lang="es" ng-app="sistemaAlertas">
 <head>
     <meta charset="UTF-8">
-    <title>Monitoreo</title>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <title>Ptos. Bs. As. - Monitoreo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- build:css -->
     <link rel="stylesheet" href="css/bootstrap.lumen.css">
@@ -26,21 +27,26 @@
     <script src="class/sockets.class.js"></script>
     <script src="class/outgoing.class.js"></script>
     <script src="class/incoming.class.js"></script>
+    <script src="class/notification.class.js"></script>
     <!-- CONTROLLERS -->
     <script src="notifications/notifications.controller.js"></script>
     <script src="config/config.controller.js"></script>
     <script src="config/outgoings/outgoing.controller.js"></script>
     <script src="config/incomings/incoming.controller.js"></script>
     <script src="navigation/navigation.controller.js"></script>
+    <script src="login/login.controller.js"></script>
     <!-- FACTORIES -->
     <script src="config/config.factory.js"></script>
     <!-- DIRECTIVES -->
     <script src="navigation/navigation.directive.js"></script>
+    <script src="notifications/panelNotification.directive.js"></script>
     <!-- SERVICES -->
     <script src="service/notification.service.js"></script>
     <script src="service/clock.service.js"></script>
     <script src="service/dialogs/dialogs.js"></script>
     <script src="service/validator.service.js"></script>
+    <script src="service/session.service.js"></script>
+    <script src="service/storage.service.js"></script>
     <!-- FILTERS -->
 
     <!-- endbuild -->
@@ -49,15 +55,15 @@
     <script src="lib/socket.io-1.4.5.js"></script>
     <!-- endbuild -->
 </head>
-<body class="container-fluid">
+<body class="container-fluid" ng-class="loginScreen ? 'image-background' : ''">
 
-<navigation-bar></navigation-bar>
+<navigation-bar ng-hide="loginScreen"></navigation-bar>
 
 <div class="row wrapper">
     <div ui-view></div>
 </div>
 
-<footer class="container-fluid footer">
+<footer class="container-fluid footer" ng-hide="loginScreen">
     <hr>
     <span class="hidden-xs">Administración General de Puertos S.E. - Departamento de desarrollo <!--<img src="images/logo-puerto-chico.png" height="45">--></span>
     <span class="visible-xs">AGP S.E. - Depto. de desarrollo <!--<img src="images/logo-puerto-chico.png">--></span>

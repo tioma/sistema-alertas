@@ -2,34 +2,57 @@
 
     <div class="page-header"></div>
 
-    <div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'alert'" ng-repeat="alert in vmNotificaciones.notifications.alerts | orderBy:'+':true">
-        <div class="panel panel-danger animated-alert col-lg-12">
+    <div ng-repeat="system in vmNotificaciones.notifications.watchedSystems">
+        <panel-notification system="system" panel-width="vmNotificaciones.panelWidth" panel-heigth="vmNotificaciones.panelHeigth"></panel-notification>
+    </div>
+
+
+    <!--<div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'alert'" ng-repeat="alert in vmNotificaciones.notifications.alerts | orderBy:'+':true">
+        <div class="panel panel-danger animated-alert col-lg-4">
+            <div class="panel-heading row">
+                Sistema {{ alert.system }}
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                    <tr ng-repeat="message in alert.messages">
+                        <td>{{ message.description }}</td>
+                        <td>{{ message.timestamp | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>-->
+
+    <!--<div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'alert'" ng-repeat="alert in vmNotificaciones.notifications.alerts | orderBy:'+':true">
+        <div class="panel panel-danger animated-alert col-lg-4">
             <div class="panel-heading row">
                 <div class="col-lg-10">Alarma - Sistema {{ alert.system }}</div><div class="col-lg-2 text-right right">{{ alert.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
             <div class="panel-body">
                 <p>{{ alert.data }}</p>
             </div>
         </div>
-    </div>
+    </div>-->
 
-    <div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'warning'" ng-repeat="warning in vmNotificaciones.notifications.warnings | orderBy:'+':true">
-        <div class="panel panel-warning animated-warning col-lg-12">
+    <!--<div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'warning'" ng-repeat="warning in vmNotificaciones.notifications.warnings | orderBy:'+':true">
+        <div class="panel panel-warning animated-warning col-lg-4">
             <div class="panel-heading row">
                 <div class="col-lg-10">Alerta - Sistema {{ warning.system }}</div> <div class="col-lg-2 text-right right">{{ warning.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
             <div class="panel-body">
                 <p>{{ warning.data }}</p>
             </div>
         </div>
-    </div>
+    </div>-->
 
-    <div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'info'" ng-repeat="info in vmNotificaciones.notifications.infos | orderBy:'+':true">
-        <div class="panel panel-info animated-info col-lg-12">
+    <!--<div ng-show="vmNotificaciones.filterNotifications == '' || vmNotificaciones.filterNotifications == 'info'" ng-repeat="info in vmNotificaciones.notifications.infos | orderBy:'+':true">
+        <div class="panel panel-info animated-info col-lg-4">
             <div class="panel-heading row">
                 <div class="col-lg-10">Aviso - Sistema {{ info.system }}</div> <div class="col-lg-2 text-right right">{{ info.timestamp | date: 'dd/MM/yyyy HH:mm:ss'}}</div> </div>
             <div class="panel-body">
                 <p>{{ info.data }}</p>
             </div>
         </div>
-    </div>
+    </div>-->
 
 </div>
