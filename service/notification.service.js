@@ -45,18 +45,19 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 		this.socket.connection.on('connect', () => {
 			console.log('socket conectado');
-			this.lastControl = {
-				name: 'Conexión establecida',
+			this.lastControl = new Notification({
+				system: 'Monitoreo',
+				name: 'Monitoreo - conexión establecida',
 				type: 'INFO',
 				fecha: new Date()
-			}
+			});
 		});
 
 		this.socket.connection.on('disconnect', () => {
 			console.log('socket desconectado');
 			let data = {
 				system: 'Monitoreo',
-				title: 'Sistema de monitoreo',
+				name: 'Sistema de monitoreo',
 				description: 'Se ha perdido la conexion con el servidor de monitoreo.',
 				type: 'ERROR',
 				code: 'CONTROL',
@@ -69,7 +70,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			console.log('error de conexión');
 			let data = {
 				system: 'Monitoreo',
-				title: 'Sistema de monitoreo',
+				name: 'Sistema de monitoreo',
 				description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
 				type: 'ERROR',
 				code: 'CONTROL',
@@ -81,11 +82,11 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 		this.socket.connection.on('reconnect_attempt', () => {
 			console.log('intentando reconectar');
-			this.lastControl = {
+			this.lastControl = new Notification({
 				name: 'Intentando reconectar...',
 				fecha: new Date(),
 				type: 'INFO'
-			}
+			});
 		});
 
 		this.removeNotifications();
