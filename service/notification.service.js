@@ -7,10 +7,6 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 	this.warningCount = 0;
 	this.alertCount = 0;
 
-	this.infos = [];
-	this.warnings = [];
-	this.alerts = [];
-
 	this.lastControl = null;
 
 	this.watchedSystems = [];
@@ -21,39 +17,26 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		this.warningCount = 0;
 		this.alertCount = 0;
 
-		this.infos = [];
-		this.warnings = [];
-		this.alerts = [];
-
 		this.lastControl = null;
 
 		this.watchedSystems = [];
 
 		Session.tasks.forEach((task) => {
-			this.watchedSystems.push({system: task, list: [
-				new Notification({fecha: new Date(), type:'ERROR'}),
-				new Notification({fecha: new Date(), type: 'WARN'}),
-				new Notification({fecha: new Date(), type: 'INFO'}),
-				new Notification({fecha: new Date(), type: 'ERROR'})]});
+			this.watchedSystems.push({system: task, list: []});
 		});
 
 		this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
 
 		this.socket.connection.on('outgoing', (data) => {
+			console.log('outgoing');
 			console.log(data);
-			/*if (data.type == 'ERROR'){
-				this.setAlertNotif(data);
-			} else if (data.type == "WARN"){
-				this.setWarningNotif(data);
-			} else {
-				this.setInfoNotif(data);
-			}*/
-
+			this.setNotification(data);
 		});
 
 		this.socket.connection.on('incoming', (data) => {
 			console.log('incoming');
 			console.log(data);
+			this.setNotification(data);
 		});
 
 		this.socket.connection.on('isAlive', (data) => {
@@ -70,28 +53,30 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 		this.socket.connection.on('disconnect', () => {
 			let data = {
-				name: 'Monitoreo',
+				system: 'Monitoreo',
+				title: 'Sistema de monitoreo',
 				description: 'Se ha perdido la conexion con el servidor de monitoreo.',
+				type: 'ERROR',
+				code: 'CONTROL',
 				fecha: new Date()
 			};
-			this.setAlertNotif(data);
+			this.setNotification(data);
 		});
 
 		this.socket.connection.on('connect_error', () => {
 			let data = {
-				name: 'Monitoreo',
+				system: 'Monitoreo',
+				title: 'Sistema de monitoreo',
 				description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
+				type: 'ERROR',
+				code: 'CONTROL',
 				fecha: new Date()
 			};
-			this.setAlertNotif(data);
+			this.setNotification(data);
 		});
 
-		this.socket.connection.on('reconnect', (attempt) => {
-			console.log('reconexión intento: ' + attempt);
-		});
 
 		this.socket.connection.on('reconnect_attempt', () => {
-			console.log('intentando reconectar');
 			this.lastControl = {
 				name: 'Intentando reconectar...',
 				fecha: new Date(),
@@ -99,30 +84,47 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			}
 		});
 
+		this.removeNotifications();
+
 	};
 
-	/*this.removeNotifications = () => {
+	this.setNotification = (data) => {
+		if (data.type == 'ERROR'){
+			this.alertCount++;
+		} else if(data.type == 'WARN'){
+			this.warningCount++;
+		} else {
+			this.infoCount++;
+		}
+
+		let notification = new Notification(data);
+
+		this.watchedSystems.forEach((system) => {
+			if (system.system == notification.system){
+				system.list.push(notification);
+				notification.playSound();
+			}
+		})
+	};
+
+	this.removeNotifications = () => {
 		this.controlPromise = $timeout(() => {
 			console.log('chequeamos arrays');
-			if (this.infos.length > this.infosMax){
-				this.infos.splice(0, this.infos.length-this.infosMax);
-			}
-			if (this.warnings.length > this.warningsMax){
-				this.warnings.splice(0, this.warnings.length-this.warningsMax);
-			}
-			if(this.alerts.length > this.alertsMax){
-				this.alerts.splice(0, this.alerts.length-this.alertsMax);
-			}
+			this.watchedSystems.forEach((system) => {
+				if (system.list.length > 20){ //Valor arbitrario para definir un máximo de notificaciones que se guardan
+					system.list.splice(0, system.list.length - 20);
+				}
+			});
 			this.removeNotifications();
 		}, 1500);
-	};*/
+	};
 
 	/*this.cancelControl = () => {
 		console.log('cancelamos ejecucion timeout');
 		$timeout.cancel(this.controlPromise);
 	};*/
 
-	this.setInfoNotif = (data) => {
+	/*this.setInfoNotif = (data) => {
 		this.infoCount++;
 
 		let info = {
@@ -183,7 +185,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			audio.remove(); //Remove when played.
 		};
 		document.body.appendChild(audio);
-	};
+	};*/
 
 	//this.removeNotifications();
 

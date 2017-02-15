@@ -34,7 +34,7 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
                 name: 'UsuarioPrueba',
                 role: 'admin',
                 token: 'untokenloco',
-                tasks: ['Tasa a las cargas', 'Facturación terminales', 'Gates terminales', 'Turnos terminales', 'Giro de buques', 'e-PuertoBue']
+                tasks: ['Monitoreo', 'Facturación terminales', 'Gates terminales', 'Turnos terminales', 'Giro de buques', 'e-PuertoBue']
             };
             this.token = 'untokenloco';
             deferred.resolve();

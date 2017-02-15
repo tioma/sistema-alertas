@@ -32,7 +32,7 @@ sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRou
 		templateUrl: 'login/login.html',
 		controller: 'loginCtrl as loginVm'
 	}).state('notifications', {
-		url: '/notifications/:filter',
+		url: '/notifications',
 		templateUrl: 'notifications/notifications.html',
 		controller: 'notificationsCtrl as vmNotificaciones'
 	}).state('config', {

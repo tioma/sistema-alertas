@@ -1,13 +1,11 @@
 /**
  * Created by kolesnikov-a on 11/11/2016.
  */
-sistemaAlertas.controller('notificationsCtrl', ['notificationService', '$stateParams',
-	function(notificationService, $stateParams){
+sistemaAlertas.controller('notificationsCtrl', ['notificationService',
+	function(notificationService){
 
 		this.notifications = notificationService;
 		this.notifications.init();
-
-		this.filterNotifications = $stateParams.filter;
 
 		let totalSystems = this.notifications.watchedSystems.length;
 		let widthPanel = 4;
@@ -21,9 +19,5 @@ sistemaAlertas.controller('notificationsCtrl', ['notificationService', '$statePa
 		}
 
 		this.panelWidth = `col-xs-${widthPanel}`;
-
-		console.log(this.panelWidth);
-		console.log(this.panelHeigth);
-		console.log(this.notifications.watchedSystems)
 
 	}]);
