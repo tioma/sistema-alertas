@@ -44,6 +44,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		});
 
 		this.socket.connection.on('connect', () => {
+			console.log('socket conectado');
 			this.lastControl = {
 				name: 'Conexión establecida',
 				type: 'INFO',
@@ -52,6 +53,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		});
 
 		this.socket.connection.on('disconnect', () => {
+			console.log('socket desconectado');
 			let data = {
 				system: 'Monitoreo',
 				title: 'Sistema de monitoreo',
@@ -64,6 +66,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		});
 
 		this.socket.connection.on('connect_error', () => {
+			console.log('error de conexión');
 			let data = {
 				system: 'Monitoreo',
 				title: 'Sistema de monitoreo',
@@ -77,6 +80,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 
 		this.socket.connection.on('reconnect_attempt', () => {
+			console.log('intentando reconectar');
 			this.lastControl = {
 				name: 'Intentando reconectar...',
 				fecha: new Date(),
@@ -119,10 +123,10 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 		}, 1500);
 	};
 
-	/*this.cancelControl = () => {
-		console.log('cancelamos ejecucion timeout');
+	this.closeConnection = () => {
 		$timeout.cancel(this.controlPromise);
-	};*/
+		this.socket.connection.disconnect();
+	};
 
 	/*this.setInfoNotif = (data) => {
 		this.infoCount++;

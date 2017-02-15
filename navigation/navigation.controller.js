@@ -7,4 +7,9 @@ sistemaAlertas.controller('navigationCtrl', ['clockService', 'notificationServic
 	this.notifications = notificationService;
 	this.session = Session;
 
+	this.logOut = () => {
+		this.notifications.closeConnection();
+		this.session.logOut();
+	}
+
 }]);
