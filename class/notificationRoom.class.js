@@ -19,14 +19,43 @@ sistemaAlertas.factory('NotificationRoom', ['Socket', 'Notification', 'SYSTEMS',
 				this.socket.connection.emit('room', system);
 
 				this.socket.connection.on('outgoing', (data) => {
+					console.log(data);
 					this.setNotification(data);
 				});
 
 				this.socket.connection.on('incoming', (data) => {
+					console.log(data);
 					this.setNotification(data);
 				});
 
 			});
+
+			this.socket.connection.on('disconnect', () => {
+				console.log('socket desconectado');
+				let data = {
+					system: 'Monitoreo',
+					name: 'Sistema de monitoreo',
+					description: 'Se ha perdido la conexion con el servidor de monitoreo.',
+					type: 'ERROR',
+					code: 'CONTROL',
+					fecha: new Date()
+				};
+				this.setNotification(data);
+			});
+
+			this.socket.connection.on('connect_error', () => {
+				console.log('error de conexión');
+				let data = {
+					system: 'Monitoreo',
+					name: 'Sistema de monitoreo',
+					description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
+					type: 'ERROR',
+					code: 'CONTROL',
+					fecha: new Date()
+				};
+				this.setNotification(data);
+			});
+
 		}
 
 		setNotification(data){

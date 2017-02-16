@@ -19,6 +19,12 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 			this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
 
+			Session.tasks.forEach((task) => {
+				let room = new NotificationRoom(task);
+				this.watchedSystems.push(room);
+				room.checkNotifications();
+			});
+
 			let totalSystems = Session.tasks.length;
 			let widthPanel = 4;
 
@@ -33,13 +39,6 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 			this.panelWidth = `col-xs-${widthPanel}`;
 
 			this.socket.connection.on('connect', () => {
-				console.log('socket conectado');
-
-				Session.tasks.forEach((task) => {
-					let room = new NotificationRoom(task);
-					this.watchedSystems.push(room);
-					room.checkNotifications();
-				});
 
 				this.lastControl = new Notification({
 					system: 'Monitoreo',
@@ -49,69 +48,28 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 				});
 
 				this.socket.connection.on('isAlive', (data) => {
-					this.lastControl = data;
+					this.lastControl = new Notification(data);
 				});
 
 			});
 
-			this.socket.connection.on('disconnect', () => {
-				console.log('socket desconectado');
-				let data = {
-					system: 'Monitoreo',
-					name: 'Sistema de monitoreo',
-					description: 'Se ha perdido la conexion con el servidor de monitoreo.',
-					type: 'ERROR',
-					code: 'CONTROL',
-					fecha: new Date()
-				};
-				this.setNotification(data);
-			});
-
 			this.socket.connection.on('connect_error', () => {
-				console.log('error de conexión');
-				let data = {
-					system: 'Monitoreo',
-					name: 'Sistema de monitoreo',
-					description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
-					type: 'ERROR',
-					code: 'CONTROL',
-					fecha: new Date()
-				};
-				this.setNotification(data);
+				this.lastControl = new Notification({
+					name: 'Fallo de conexión con el servidor',
+					fecha: new Date(),
+					status: 'ERROR'
+				})
 			});
-
 
 			this.socket.connection.on('reconnect_attempt', () => {
 				console.log('intentando reconectar');
 				this.lastControl = new Notification({
 					name: 'Intentando reconectar...',
 					fecha: new Date(),
-					type: 'INFO'
+					status: 'INFO'
 				});
 			});
 
-			//this.removeNotifications();
-
-		};
-
-		setNotification(data){
-			/*if (data.type == 'ERROR'){
-				this.alertCount++;
-			} else if(data.type == 'WARN'){
-				this.warningCount++;
-			} else {
-				this.infoCount++;
-			}*/
-
-			let notification = new Notification(data);
-
-			this.watchedSystems.forEach((system) => {
-				if (system.system == notification.system){
-					system.count++;
-					system.list.push(notification);
-					notification.playSound();
-				}
-			})
 		};
 
 		closeConnection(){

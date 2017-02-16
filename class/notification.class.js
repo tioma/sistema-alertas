@@ -8,7 +8,12 @@ sistemaAlertas.factory('Notification', [function(){
 		constructor(notificationData){
 			angular.extend(this, notificationData);
 
-			this.playSound();
+			if (this.type){
+				this.playSound();
+			} else {
+				this.type = this.status;
+			}
+
 		}
 
 		playSound(){
