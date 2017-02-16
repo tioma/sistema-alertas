@@ -48,6 +48,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 				});
 
 				this.socket.connection.on('isAlive', (data) => {
+					console.log('is alive');
 					this.lastControl = new Notification(data);
 				});
 

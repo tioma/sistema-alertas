@@ -23,6 +23,7 @@ sistemaAlertas.constant('SOCKET_EVENTS', {
 });
 
 sistemaAlertas.constant('SYSTEMS', {
+	ADMIN: 'Administración de sistemas',
 	CTOL: 'Sistema de control de Terminales',
 	OB2: 'Giro de buques',
 	ALIVE: 'Control de recursos online'
@@ -67,8 +68,8 @@ sistemaAlertas.config(['$provide', '$httpProvider', function($provide, $httpProv
 				// optional method
 				'request': function(config) {
 					// do something on success
-					//config.headers['Token'] = $rootScope.session.getToken();
-					//config.headers['Content-Type'] = 'application/json';
+					config.headers['Token'] = $rootScope.session.token;
+					config.headers['Content-Type'] = 'application/json';
 					//config.timeout = 2000;
 
 					return config;
@@ -112,9 +113,10 @@ sistemaAlertas.config(['$provide', '$httpProvider', function($provide, $httpProv
 }]);
 
 
-sistemaAlertas.run(['$rootScope',
-	function($rootScope){
+sistemaAlertas.run(['$rootScope', 'Session',
+	function($rootScope, Session){
 
+		$rootScope.session = Session;
 		$rootScope.loginScreen = true;
 		//$rootScope.notifications = notificationService;
 		//$rootScope.timer = clockService;

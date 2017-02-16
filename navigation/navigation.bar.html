@@ -35,7 +35,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav navbar-clock"><a href><strong>{{ vmNavigation.timer.clock | date: 'dd/MM/yyyy HH:mm:ss'}}</strong></a></li>
-                <li ng-show="vmNavigation.session.role == 'admin'" class="nav" uib-dropdown>
+                <li ng-show="vmNavigation.session.isAdmin" class="nav" uib-dropdown>
                     <a href ng-hide="dropdown" uib-dropdown-toggle><i class="glyphicon glyphicon-wrench"></i> Configuración</a>
                     <ul class="dropdown-menu">
                         <li><a ui-sref="config.outgoing">Controles</a></li>

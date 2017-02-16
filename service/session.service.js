@@ -6,8 +6,9 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
     class Session {
         constructor(){
             this.data = {
-                USUARIO: '',
-                CLAVE: ''
+                email: '',
+                password: '',
+                group: []
             };
 
             if (storageService.getKey('token') !== null){
@@ -22,22 +23,14 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
             const deferred = $q.defer();
             const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/login`;
 
-            /*$http.post(inserturl, this.data).then((response) => {
+            $http.post(inserturl, this.data).then((response) => {
+                console.log(response);
                 this.userData = response.data.data;
                 this.token = response.data.data.token;
                 deferred.resolve(response);
             }).catch((response) => {
                 deferred.reject(response);
-            });*/
-
-            this.userData = {
-                name: 'UsuarioPrueba',
-                role: 'admin',
-                token: 'untokenloco',
-                tasks: ['CTOL', 'OB2', 'ALIVE']
-            };
-            this.token = 'untokenloco';
-            deferred.resolve();
+            });
 
             return deferred.promise;
         }
@@ -59,26 +52,27 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
         set userData(userData){
             //angular.extend(this.data, userData);
             //this.data.full_name = userData.full_name;
-            this.data.name = userData.name;
+            this.data.firstname = userData.firstname;
+            this.data.lastname = userData.lastname;
             this.data.token = userData.token;
             this.data.role = userData.role;
-            this.data.tasks = userData.tasks;
+            this.data.group = userData.group;
             this.data.user = userData.user;
 
             storageService.setObject('user', this.data);
 
         }
 
-        get role(){
-            return this.data.role;
+        get isAdmin(){
+            return this.data.group.indexOf('ADMIN') != -1;
         }
 
         get name(){
-            return this.data.name;
+            return `${this.data.firstname} ${this.data.lastname}`;
         }
 
         get tasks(){
-            return this.data.tasks;
+            return this.data.group;
         }
 
         get isAuthenticated(){
@@ -87,8 +81,9 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
 
         logOut(){
             this.data = {
-                USUARIO: '',
-                CLAVE: ''
+                email: '',
+                password: '',
+                group: []
             };
             storageService.deleteKey('user');
             storageService.deleteKey('token');
