@@ -7,6 +7,8 @@ sistemaAlertas.factory('Notification', [function(){
 
 		constructor(notificationData){
 			angular.extend(this, notificationData);
+
+			this.playSound();
 		}
 
 		playSound(){

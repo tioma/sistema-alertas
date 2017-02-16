@@ -4,20 +4,26 @@
 sistemaAlertas.factory('Socket', ['socketFactory', function(socketFactory) {
 
 	class Socket {
-		constructor(api_endpoint, prefix){
+		constructor(){
+			//const api_endpoint = '10.1.0.55:8073'; //SERVIDOR DESA
+			//NOTIFICACIONES: '10.1.0.55:8073' //SERVIDOR DESA
+			const api_endpoint = '10.10.0.223:8073'; //SERVIDOR DIEGO
+
 			let ioSocket = io.connect(api_endpoint, { transports: ['polling', 'websocket', 'xhr-polling']});
-			this.socket = socketFactory({ioSocket: ioSocket, prefix: prefix});
+			//this.socket = socketFactory({ioSocket: ioSocket, prefix: prefix});
+			this.socket = socketFactory({ioSocket: ioSocket});
 
 			/*this.socket.on('connect', () => {
 				//TODO definir mensajes de forward
 				console.log('socket conectado');
+				//this.socket.emit('room', system);
 
 				//this.socket.forward('outgoing'); //eventos que hay que mostrar
 				//this.socket.forward('incoming'); //alguna aplicación avisa algo
 				//this.socket.forward('isAlive'); //el servicio está vivo
 			});
 
-			this.socket.on('connect_failed', () => {
+			/*this.socket.on('connect_failed', () => {
 				console.log('falló la conexiónnnnnnn');
 			});
 

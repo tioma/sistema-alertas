@@ -22,6 +22,12 @@ sistemaAlertas.constant('SOCKET_EVENTS', {
 	NOTIFICACIONES_ISALIVE: 'notificaciones:isAlive'
 });
 
+sistemaAlertas.constant('SYSTEMS', {
+	CTOL: 'Sistema de control de Terminales',
+	OB2: 'Giro de buques',
+	ALIVE: 'Control de recursos online'
+});
+
 
 
 sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRouterProvider, $stateProvider){

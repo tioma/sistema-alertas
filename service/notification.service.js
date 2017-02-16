@@ -1,198 +1,153 @@
 /**
  * Created by kolesnikov-a on 14/11/2016.
  */
-sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', 'Session', 'Notification', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout, Session, Notification){
+sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', 'Session', 'Notification', 'NotificationRoom', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout, Session, Notification, NotificationRoom){
 
-	this.infoCount = 0;
-	this.warningCount = 0;
-	this.alertCount = 0;
+	class notificationService {
 
-	this.lastControl = null;
+		constructor(){
+			this.lastControl = null;
 
-	this.watchedSystems = [];
-
-	this.init = () => {
-
-		this.infoCount = 0;
-		this.warningCount = 0;
-		this.alertCount = 0;
-
-		this.lastControl = null;
-
-		this.watchedSystems = [];
-
-		Session.tasks.forEach((task) => {
-			this.watchedSystems.push({system: task, list: []});
-		});
-
-		this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
-
-		this.socket.connection.on('outgoing', (data) => {
-			console.log('outgoing');
-			console.log(data);
-			this.setNotification(data);
-		});
-
-		this.socket.connection.on('incoming', (data) => {
-			console.log('incoming');
-			console.log(data);
-			this.setNotification(data);
-		});
-
-		this.socket.connection.on('isAlive', (data) => {
-			this.lastControl = data;
-		});
-
-		this.socket.connection.on('connect', () => {
-			console.log('socket conectado');
-			this.lastControl = new Notification({
-				system: 'Monitoreo',
-				name: 'Monitoreo - conexión establecida',
-				type: 'INFO',
-				fecha: new Date()
-			});
-		});
-
-		this.socket.connection.on('disconnect', () => {
-			console.log('socket desconectado');
-			let data = {
-				system: 'Monitoreo',
-				name: 'Sistema de monitoreo',
-				description: 'Se ha perdido la conexion con el servidor de monitoreo.',
-				type: 'ERROR',
-				code: 'CONTROL',
-				fecha: new Date()
-			};
-			this.setNotification(data);
-		});
-
-		this.socket.connection.on('connect_error', () => {
-			console.log('error de conexión');
-			let data = {
-				system: 'Monitoreo',
-				name: 'Sistema de monitoreo',
-				description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
-				type: 'ERROR',
-				code: 'CONTROL',
-				fecha: new Date()
-			};
-			this.setNotification(data);
-		});
-
-
-		this.socket.connection.on('reconnect_attempt', () => {
-			console.log('intentando reconectar');
-			this.lastControl = new Notification({
-				name: 'Intentando reconectar...',
-				fecha: new Date(),
-				type: 'INFO'
-			});
-		});
-
-		this.removeNotifications();
-
-	};
-
-	this.setNotification = (data) => {
-		if (data.type == 'ERROR'){
-			this.alertCount++;
-		} else if(data.type == 'WARN'){
-			this.warningCount++;
-		} else {
-			this.infoCount++;
+			this.watchedSystems = [];
 		}
 
-		let notification = new Notification(data);
+		init(){
 
-		this.watchedSystems.forEach((system) => {
-			if (system.system == notification.system){
-				system.list.push(notification);
-				notification.playSound();
+			this.lastControl = null;
+
+			this.watchedSystems = [];
+
+			this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
+
+			let totalSystems = Session.tasks.length;
+			let widthPanel = 4;
+
+			this.panelHeigth = 'half-screen';
+			if (totalSystems < 4){
+				widthPanel = 12 / totalSystems;
+				this.panelHeigth = 'full-screen';
+			} else if (totalSystems == 4){
+				widthPanel = 6;
 			}
-		})
-	};
 
-	this.removeNotifications = () => {
-		this.controlPromise = $timeout(() => {
-			console.log('chequeamos arrays');
+			this.panelWidth = `col-xs-${widthPanel}`;
+
+			this.socket.connection.on('connect', () => {
+				console.log('socket conectado');
+
+				Session.tasks.forEach((task) => {
+					let room = new NotificationRoom(task);
+					this.watchedSystems.push(room);
+					room.checkNotifications();
+				});
+
+				this.lastControl = new Notification({
+					system: 'Monitoreo',
+					name: 'Monitoreo - conexión establecida',
+					type: 'INFO',
+					fecha: new Date()
+				});
+
+				this.socket.connection.on('isAlive', (data) => {
+					this.lastControl = data;
+				});
+
+			});
+
+			this.socket.connection.on('disconnect', () => {
+				console.log('socket desconectado');
+				let data = {
+					system: 'Monitoreo',
+					name: 'Sistema de monitoreo',
+					description: 'Se ha perdido la conexion con el servidor de monitoreo.',
+					type: 'ERROR',
+					code: 'CONTROL',
+					fecha: new Date()
+				};
+				this.setNotification(data);
+			});
+
+			this.socket.connection.on('connect_error', () => {
+				console.log('error de conexión');
+				let data = {
+					system: 'Monitoreo',
+					name: 'Sistema de monitoreo',
+					description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
+					type: 'ERROR',
+					code: 'CONTROL',
+					fecha: new Date()
+				};
+				this.setNotification(data);
+			});
+
+
+			this.socket.connection.on('reconnect_attempt', () => {
+				console.log('intentando reconectar');
+				this.lastControl = new Notification({
+					name: 'Intentando reconectar...',
+					fecha: new Date(),
+					type: 'INFO'
+				});
+			});
+
+			//this.removeNotifications();
+
+		};
+
+		setNotification(data){
+			/*if (data.type == 'ERROR'){
+				this.alertCount++;
+			} else if(data.type == 'WARN'){
+				this.warningCount++;
+			} else {
+				this.infoCount++;
+			}*/
+
+			let notification = new Notification(data);
+
 			this.watchedSystems.forEach((system) => {
-				if (system.list.length > 20){ //Valor arbitrario para definir un máximo de notificaciones que se guardan
-					system.list.splice(0, system.list.length - 20);
+				if (system.system == notification.system){
+					system.count++;
+					system.list.push(notification);
+					notification.playSound();
 				}
+			})
+		};
+
+		closeConnection(){
+			$timeout.cancel(this.controlPromise);
+			this.watchedSystems.forEach((system) => {
+				system.disconnect();
 			});
-			this.removeNotifications();
-		}, 1500);
-	};
-
-	this.closeConnection = () => {
-		$timeout.cancel(this.controlPromise);
-		this.socket.connection.disconnect();
-	};
-
-	/*this.setInfoNotif = (data) => {
-		this.infoCount++;
-
-		let info = {
-			system: data.name,
-			data: data.description,
-			timestamp: data.fecha
+			this.socket.connection.disconnect();
 		};
 
-		this.infos.push(info);
-		this.playNotifSound('audio/tonoAviso.mp3');
-	};
-
-	this.setWarningNotif = (data) => {
-		this.warningCount++;
-
-		let warning = {
-			system: data.name,
-			data: data.description,
-			timestamp: data.fecha
-		};
-
-		this.warnings.push(warning);
-		this.playNotifSound('audio/tonoAlerta.mp3');
-	};
-
-	this.setAlertNotif = (data) => {
-		this.alertCount++;
-		let repeated = false;
-		let message = {
-			description: data.description,
-			timestamp: data.fecha
-		};
-
-		this.alerts.forEach((alert) => {
-			if (alert.system == data.name){
-				alert.messages.push(message);
-				repeated = true;
-			}
-		});
-
-		if (!repeated){
-			let alert = {
-				system: data.name,
-				messages: [message]
-			};
-			this.alerts.push(alert);
+		get infoCount(){
+			let total = 0;
+			this.watchedSystems.forEach((system) => {
+				total+= system.infoCount;
+			});
+			return total;
 		}
 
-		this.playNotifSound('audio/tonoAlarma.mp3');
-	};
+		get warningCount(){
+			let total = 0;
+			this.watchedSystems.forEach((system) => {
+				total+= system.warningCount;
+			});
+			return total;
+		}
 
-	this.playNotifSound = function(url){
-		let audio = document.createElement('audio');
-		audio.style.display = "none";
-		audio.src = url;
-		audio.autoplay = true;
-		audio.onended = () => {
-			audio.remove(); //Remove when played.
-		};
-		document.body.appendChild(audio);
-	};*/
+		get alertCount(){
+			let total = 0;
+			this.watchedSystems.forEach((system) => {
+				total+= system.alertCount;
+			});
+			return total;
+		}
 
-	//this.removeNotifications();
+	}
 
+	return new notificationService();
 
 }]);

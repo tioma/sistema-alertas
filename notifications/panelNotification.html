@@ -1,7 +1,7 @@
 <div class="{{ panelWidth }}">
     <div class="panel panel-primary {{ panelHeigth }}">
         <div class="panel-heading">
-            {{ system.system }}
+            {{ system.system }} <span class="pull-right badge">{{ system.totalNotifications }}</span>
         </div>
         <div class="panel-body">
             <div ng-repeat="notification in system.list | orderBy: '+':true" class="notification-container">
