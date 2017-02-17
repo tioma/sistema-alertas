@@ -10,11 +10,11 @@
                         <div class="{{ notification.notificationStyle }}"><i class="glyphicon glyphicon-warning-sign"></i> </div>
                     </div>
                     <div class="notification-card-title">
-                        <h4 class="notification-text-title"><span style="background-color: #ffffff">&nbsp;{{ notification.name }}&nbsp;</span></h4>
-                        <h5 class="notification-subtitle">{{ notification.code }} &nbsp;&nbsp;<i class="glyphicon glyphicon-calendar"></i> {{ notification.fecha | date: 'dd/MM/yyyy' }} &nbsp;<i class="glyphicon glyphicon-time"></i> {{ notification.fecha | date: 'HH:mm:ss' }} &nbsp; &nbsp;<i ng-show="notification.mail" class="text-success glyphicon glyphicon-envelope" style="font-size: 10px"></i> </h5>
+                        <h4 class="notification-text-title"><span style="background-color: #ffffff">&nbsp;{{ notification.description }}&nbsp;</span></h4>
+                        <h5 class="notification-subtitle">{{ notification.name }} &nbsp;&nbsp;<i class="glyphicon glyphicon-calendar"></i> {{ notification.fecha | date: 'dd/MM/yyyy' }} &nbsp;<i class="glyphicon glyphicon-time"></i> {{ notification.fecha | date: 'HH:mm:ss' }} &nbsp; &nbsp;<i ng-show="notification.emailSent" class="text-success glyphicon glyphicon-envelope" style="font-size: 10px"></i> </h5>
                     </div>
                     <div class="notification-card-text">
-                        {{ notification.description }}
+                        {{ notification.message.description }}
                     </div>
                 </div>
             </div>

@@ -80,6 +80,14 @@ sistemaAlertas.factory('Incoming', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			});
 		}
 
+		set groups(groups){
+			this.group = [];
+			groups.forEach((group) => {
+				this.group.push(group.text);
+			});
+			if (this.group.indexOf('ADMIN') == -1) this.group.push('ADMIN');
+		}
+
 	}
 
 	return Incoming;

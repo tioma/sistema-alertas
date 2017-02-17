@@ -30,7 +30,7 @@
         <fieldset>
             <legend>Nueva tarea</legend>
             <div class="row">
-                <div class="form-group col-lg-4">
+                <div class="form-group col-lg-5">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputNombre">Nombre</label>
                         <input type="text" class="form-control" id="inputNombre" ng-model="vmOutgoings.editOutgoing.name" required>
@@ -39,17 +39,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-lg-4 inline-input">
-                    <div class="input-group">
-                        <label class="input-group-addon" for="inputGroup">Grupo</label>
-                        <select class="form-control" id="inputGroup" ng-model="vmOutgoings.editOutgoing.group">
-                            <option value="grupo1">Grupo 1</option>
-                            <option value="grupo2">Grupo 2</option>
-                            <option value="grupo3">Grupo 3</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group col-lg-3 inline-input">
+                <div class="form-group col-lg-5 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputType">Tipo</label>
                         <select class="form-control" id="inputType" ng-model="vmOutgoings.editOutgoing.type">
@@ -59,10 +49,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="checkbox col-lg-1">
+                <div class="checkbox col-lg-2">
                     <label>
                         <input type="checkbox" class="checkbox" ng-model="vmOutgoings.editOutgoing.status"> Habilitar
                     </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group  col-lg-12">
+                    <div class="input-group col-lg-12">
+                        <tags-input id="inputGroups" ng-model="vmOutgoings.groupsList" min-length="1" placeholder="Grupos que verán la tarea." add-from-autocomplete-only="true">
+                            <auto-complete source="vmOutgoings.loadGroups($query)" min-length="1" load-on-focus="true"></auto-complete>
+                        </tags-input>
+                    </div>
                 </div>
             </div>
             <div class="row">

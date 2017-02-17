@@ -1,12 +1,13 @@
 /**
  * Created by kolesnikov-a on 07/02/2017.
  */
-sistemaAlertas.controller('incomingCtrl', ['configFactory', 'Incoming', 'validatorService', 'dialogsService', function(configFactory, Incoming, validatorService, dialogsService){
+sistemaAlertas.controller('incomingCtrl', ['configFactory', 'Incoming', 'validatorService', 'dialogsService', 'dataService', function(configFactory, Incoming, validatorService, dialogsService, dataService){
 
 	let vm = this;
 
 	vm.incomings = [];
 	vm.emailList = [];
+	vm.groupsList = [];
 	vm.editIncoming = new Incoming();
 	vm.validator = validatorService;
 
@@ -17,22 +18,32 @@ sistemaAlertas.controller('incomingCtrl', ['configFactory', 'Incoming', 'validat
 		});
 	}
 
+	vm.loadGroups = (query) => {
+		return dataService.getGroupsList(query);
+	};
+
 	vm.setIncoming = (incoming) => {
 		vm.editIncoming = incoming;
 		vm.emailList = [];
 		vm.editIncoming.mail.accounts.forEach((mail) => {
 			vm.emailList.push({text: mail});
-		})
+		});
+		vm.groupsList = [];
+		vm.editIncoming.group.forEach((group) => {
+			vm.groupsList.push({text: group});
+		});
 	};
 
 	vm.resetForm = () => {
 		vm.emailList = [];
+		vm.groupsList = [];
 		vm.editIncoming = new Incoming();
 	};
 
 	vm.saveIncoming = () => {
 		if (vm.validator.checkMailList(vm.emailList, vm.editIncoming)){
 			vm.editIncoming.mailList = vm.emailList;
+			vm.editIncoming.groups = vm.groupsList;
 			vm.editIncoming.save().then((data) => {
 				dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editIncoming.name} se han guardado correctamente`);
 				if (data.task == 'new'){

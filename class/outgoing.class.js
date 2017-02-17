@@ -44,7 +44,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		update(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing/${this.name}/change`;
+			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoings/outgoing/${this.name}/change`;
 			$http.put(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'update';
@@ -60,7 +60,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		addNew(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing`;
+			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoings/outgoing`;
 			$http.post(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'new';
@@ -127,7 +127,14 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			headersList.forEach((header) => {
 				this.req.headers[header.name] = header.value;
 			});
-			console.log(this.req.headers);
+		}
+
+		set groups(groups){
+			this.group = [];
+			groups.forEach((group) => {
+				this.group.push(group.text);
+			});
+			if (this.group.indexOf('ADMIN') == -1) this.group.push('ADMIN');
 		}
 
 		get completeUrl(){

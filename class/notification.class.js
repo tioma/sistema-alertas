@@ -14,6 +14,15 @@ sistemaAlertas.factory('Notification', [function(){
 				this.type = this.status;
 			}
 
+
+			if (typeof this.fecha == 'string'){
+				let partesFecha = this.fecha.split(' ');
+				let partesDia = partesFecha[0].split('-');
+				let partesHora = partesFecha[1].split(':');
+
+				this.fecha = new Date(partesDia[2], partesDia[1], partesDia[0], partesHora[0], partesHora[1], partesHora[2]);
+			}
+
 		}
 
 		playSound(){

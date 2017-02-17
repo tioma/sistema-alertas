@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 01/02/2017.
  */
-sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogsService', 'validatorService', function(configFactory, Outgoing, dialogsService, validatorService){
+sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogsService', 'validatorService', 'dataService', function(configFactory, Outgoing, dialogsService, validatorService, dataService){
 
 	const vm = this;
 
@@ -18,6 +18,10 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 	vm.editOutgoing = new Outgoing();
 
 	vm.outgoings = [];
+
+	vm.loadGroups = (query) => {
+		return dataService.getGroupsList(query);
+	};
 
 	vm.resetSchedule = () => {
 		vm.schedule = {
@@ -43,6 +47,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		};
 	};
 
+	vm.groupsList = [];
 	vm.emailList = [];
 	vm.headersList = [];
 
@@ -122,6 +127,10 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		vm.editOutgoing.mail.accounts.forEach((account) => {
 			vm.emailList.push({ text: account });
 		});
+		vm.groupsList = [];
+		vm.editOutgoing.group.forEach((group) => {
+			vm.groupsList.push({ text: group});
+		});
 		vm.headersList = [];
 		for (var property in vm.editOutgoing.req.headers) {
 			if (vm.editOutgoing.req.headers.hasOwnProperty(property)) {
@@ -163,6 +172,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		});
 		vm.emailList = [];
 		vm.headersList = [];
+		vm.groupsList = [];
 	};
 
 
@@ -189,6 +199,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 				vm.editOutgoing.schedule = vm.schedule;
 				vm.editOutgoing.daysOfWeek = vm.daysOfWeek;
 				vm.editOutgoing.mailList = vm.emailList;
+				vm.editOutgoing.groups = vm.groupsList;
 				vm.editOutgoing.headers = vm.headersList;
 				vm.editOutgoing.save().then((data) => {
 					dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
