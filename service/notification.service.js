@@ -7,69 +7,74 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 
 		constructor(){
 			this.lastControl = null;
+			this.socket = null;
 
 			this.watchedSystems = [];
+
+			this.init();
 		}
 
 		init(){
 
-			this.lastControl = null;
+			if (this.socket == null){
+				this.lastControl = null;
+				this.watchedSystems = [];
 
-			this.watchedSystems = [];
+				this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
 
-			this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
+				Session.tasks.forEach((task) => {
+					let room = new NotificationRoom(task);
+					this.watchedSystems.push(room);
+					room.checkNotifications();
+				});
 
-			Session.tasks.forEach((task) => {
-				let room = new NotificationRoom(task);
-				this.watchedSystems.push(room);
-				room.checkNotifications();
-			});
+				let totalSystems = Session.tasks.length;
+				let widthPanel = 4;
 
-			let totalSystems = Session.tasks.length;
-			let widthPanel = 4;
+				this.panelHeigth = 'half-screen';
+				if (totalSystems < 4){
+					widthPanel = 12 / totalSystems;
+					this.panelHeigth = 'full-screen';
+				} else if (totalSystems == 4){
+					widthPanel = 6;
+				}
 
-			this.panelHeigth = 'half-screen';
-			if (totalSystems < 4){
-				widthPanel = 12 / totalSystems;
-				this.panelHeigth = 'full-screen';
-			} else if (totalSystems == 4){
-				widthPanel = 6;
+				this.panelWidth = `col-xs-${widthPanel}`;
+
+				this.socket.connection.on('connect', () => {
+
+					this.lastControl = new Notification({
+						system: 'Monitoreo',
+						name: 'Monitoreo - conexión establecida',
+						type: 'INFO',
+						fecha: new Date()
+					});
+
+					this.socket.connection.on('isAlive', (data) => {
+						console.log('is alive');
+						console.log(data);
+						this.lastControl = new Notification(data);
+					});
+
+				});
+
+				this.socket.connection.on('connect_error', () => {
+					this.lastControl = new Notification({
+						name: 'Fallo de conexión con el servidor',
+						fecha: new Date(),
+						status: 'ERROR'
+					})
+				});
+
+				this.socket.connection.on('reconnect_attempt', () => {
+					console.log('intentando reconectar');
+					this.lastControl = new Notification({
+						name: 'Intentando reconectar...',
+						fecha: new Date(),
+						status: 'INFO'
+					});
+				});
 			}
-
-			this.panelWidth = `col-xs-${widthPanel}`;
-
-			this.socket.connection.on('connect', () => {
-
-				this.lastControl = new Notification({
-					system: 'Monitoreo',
-					name: 'Monitoreo - conexión establecida',
-					type: 'INFO',
-					fecha: new Date()
-				});
-
-				this.socket.connection.on('isAlive', (data) => {
-					console.log('is alive');
-					this.lastControl = new Notification(data);
-				});
-
-			});
-
-			this.socket.connection.on('connect_error', () => {
-				this.lastControl = new Notification({
-					name: 'Fallo de conexión con el servidor',
-					fecha: new Date(),
-					status: 'ERROR'
-				})
-			});
-
-			this.socket.connection.on('reconnect_attempt', () => {
-				console.log('intentando reconectar');
-				this.lastControl = new Notification({
-					name: 'Intentando reconectar...',
-					fecha: new Date(),
-					status: 'INFO'
-				});
-			});
 
 		};
 

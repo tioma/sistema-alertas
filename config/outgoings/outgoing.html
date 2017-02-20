@@ -2,7 +2,7 @@
     <h1>Configuración de tareas</h1>
 </div>
 
-<div class="col-lg-6">
+<div class="col-lg-6 col-xs-12">
     <table class="table table-responsive table-hover table-striped">
         <thead>
         <tr>
@@ -25,12 +25,12 @@
         </tbody>
     </table>
 </div>
-<div class="col-lg-6">
+<div class="col-lg-6 col-xs-12">
     <form class="form-horizontal" ng-submit="vmOutgoings.saveOutgoing()">
         <fieldset>
             <legend>Nueva tarea</legend>
             <div class="row">
-                <div class="form-group col-lg-5">
+                <div class="form-group col-xs-5">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputNombre">Nombre</label>
                         <input type="text" class="form-control" id="inputNombre" ng-model="vmOutgoings.editOutgoing.name" required>
@@ -39,7 +39,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-lg-5 inline-input">
+                <div class="form-group col-xs-5 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputType">Tipo</label>
                         <select class="form-control" id="inputType" ng-model="vmOutgoings.editOutgoing.type">
@@ -49,15 +49,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="checkbox col-lg-2">
+                <div class="checkbox col-xs-2">
                     <label>
                         <input type="checkbox" class="checkbox" ng-model="vmOutgoings.editOutgoing.status"> Habilitar
                     </label>
                 </div>
             </div>
             <div class="row">
-                <div class="form-group  col-lg-12">
-                    <div class="input-group col-lg-12">
+                <div class="form-group  col-xs-12">
+                    <div class="input-group col-xs-12">
                         <tags-input id="inputGroups" ng-model="vmOutgoings.groupsList" min-length="1" placeholder="Grupos que verán la tarea." add-from-autocomplete-only="true">
                             <auto-complete source="vmOutgoings.loadGroups($query)" min-length="1" load-on-focus="true"></auto-complete>
                         </tags-input>
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-lg-12">
+                <div class="form-group col-xs-12">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputDesc">Descripción</label>
                         <input type="text" class="form-control" id="inputDesc" ng-model="vmOutgoings.editOutgoing.description">
@@ -76,7 +76,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-lg-3">
+                <div class="form-group col-lg-3 col-xs-6">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputMethod">Método</label>
                         <select type="text" class="form-control" id="inputMethod" ng-model="vmOutgoings.editOutgoing.req.method" required>
@@ -87,7 +87,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group col-lg-3 inline-input">
+                <div class="form-group col-lg-3 col-xs-6 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputDir">IP</label>
                         <input type="text" class="form-control" id="inputDir" ng-model="vmOutgoings.editOutgoing.req.url" required>
@@ -96,7 +96,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-lg-3 inline-input">
+                <div class="form-group col-lg-3 col-xs-6 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputPort">Puerto</label>
                         <input type="number" class="form-control" id="inputPort" min="0" max="9999" ng-model="vmOutgoings.editOutgoing.req.port" required>
@@ -105,10 +105,32 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-lg-3 inline-input">
+                <div class="form-group col-lg-3 col-xs-6 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputPath">Ruta</label>
                         <input type="text" class="form-control" id="inputPath" ng-model="vmOutgoings.editOutgoing.req.path" required>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-8 col-xs-6">
+                    <div class="input-group col-xs-12">
+                        <tags-input
+                                id="inputFields"
+                                ng-model="vmOutgoings.fieldsList"
+                                min-length="1"
+                                placeholder="Nombres de campos a leer">
+                        </tags-input>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4 col-xs-6 inline-input">
+                    <div class="input-group">
+                        <label class="input-group-addon" for="inputDateField">Campo fecha</label>
+                        <input type="text" class="form-control" id="inputDateField" ng-model="vmOutgoings.editOutgoing.res.config.date">
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></button>
                         </span>
@@ -144,12 +166,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="checkbox col-lg-2">
+                <div class="checkbox col-xs-2">
                     <label>
                         <input type="checkbox" class="checkbox" ng-model="vmOutgoings.editOutgoing.mail.status"> Enviar mail
                     </label>
                 </div>
-                <div class="form-group col-lg-5 inline-input">
+                <div class="form-group col-xs-5 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputPeriod">Por:</label>
                         <select class="form-control" id="inputPeriod" ng-model="vmOutgoings.editOutgoing.mail.period">
@@ -159,7 +181,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group col-lg-5 inline-input">
+                <div class="form-group col-xs-5 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputCount">Cantidad</label>
                         <input type="number" class="form-control" id="inputCount" min="1" max="100" ng-model="vmOutgoings.editOutgoing.mail.count">
@@ -170,8 +192,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group  col-lg-12">
-                    <div class="input-group col-lg-12">
+                <div class="form-group col-xs-12">
+                    <div class="input-group col-xs-12">
                         <tags-input
                                 id="inputMails"
                                 ng-model="vmOutgoings.emailList"
@@ -183,7 +205,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-lg-3">
+                <div class="form-group col-lg-3 col-xs-5">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputStatus">Esperado</label>
                         <select class="form-control" id="inputStatus" ng-model="vmOutgoings.editOutgoing.res.status" convert-to-number>
@@ -197,7 +219,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-lg-9 inline-input">
+                <div class="form-group col-lg-9 col-xs-7 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputMsg">Mensaje</label>
                         <input type="text" class="form-control" id="inputMsg" ng-model="vmOutgoings.editOutgoing.res.description">

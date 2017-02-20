@@ -50,6 +50,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 	vm.groupsList = [];
 	vm.emailList = [];
 	vm.headersList = [];
+	vm.fieldsList = [];
 
 	vm.daysOfWeek = [
 		{ day: "D", repeat: false, value: 0 },
@@ -131,6 +132,10 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		vm.editOutgoing.group.forEach((group) => {
 			vm.groupsList.push({ text: group});
 		});
+		vm.fieldsList = [];
+		vm.editOutgoing.res.config.description.forEach((field) => {
+			vm.fieldsList.push({text: field});
+		});
 		vm.headersList = [];
 		for (var property in vm.editOutgoing.req.headers) {
 			if (vm.editOutgoing.req.headers.hasOwnProperty(property)) {
@@ -173,6 +178,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 		vm.emailList = [];
 		vm.headersList = [];
 		vm.groupsList = [];
+		vm.fieldsList = [];
 	};
 
 
@@ -201,6 +207,7 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 				vm.editOutgoing.mailList = vm.emailList;
 				vm.editOutgoing.groups = vm.groupsList;
 				vm.editOutgoing.headers = vm.headersList;
+				vm.editOutgoing.configFields = vm.fieldsList;
 				vm.editOutgoing.save().then((data) => {
 					dialogsService.notify('Monitoreo', `Los cambios en la tarea ${vm.editOutgoing.name} se han guardado correctamente`);
 					if (data.task == 'new'){

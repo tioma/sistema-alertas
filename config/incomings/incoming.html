@@ -25,7 +25,7 @@
         <fieldset>
             <legend>Nueva tarea</legend>
             <div class="row">
-                <div class="form-group col-lg-6">
+                <div class="form-group col-xs-6">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputNombre">Nombre</label>
                         <input type="text" class="form-control" id="inputNombre" ng-model="vmIncomings.editIncoming.name" required>
@@ -34,7 +34,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group col-lg-6 inline-input">
+                <div class="form-group col-xs-6 inline-input">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputType">Tipo</label>
                         <select class="form-control" id="inputType" ng-model="vmIncomings.editIncoming.type">
@@ -46,8 +46,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group  col-lg-12">
-                    <div class="input-group col-lg-12">
+                <div class="form-group col-xs-12">
+                    <div class="input-group col-xs-12">
                         <tags-input id="inputGroups" ng-model="vmIncomings.groupsList" min-length="1" placeholder="Grupos que verán la tarea." add-from-autocomplete-only="true">
                             <auto-complete source="vmIncomings.loadGroups($query)" min-length="1" load-on-focus="true"></auto-complete>
                         </tags-input>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-lg-12">
+                <div class="form-group col-xs-12">
                     <div class="input-group">
                         <label class="input-group-addon" for="inputDesc">Descripción</label>
                         <input type="text" class="form-control" id="inputDesc" ng-model="vmIncomings.editIncoming.description">
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="checkbox col-lg-2">
+                <div class="checkbox col-xs-4 col-lg-2">
                     <label>
                         <input type="checkbox" class="checkbox" ng-model="vmIncomings.editIncoming.mail.status"> Enviar mail
                     </label>
@@ -92,8 +92,8 @@
                 </div>-->
             </div>
             <div class="row">
-                <div class="form-group  col-lg-12">
-                    <div class="input-group col-lg-12">
+                <div class="form-group col-xs-12">
+                    <div class="input-group col-xs-12">
                         <tags-input
                                 id="inputMails"
                                 ng-model="vmIncomings.emailList"

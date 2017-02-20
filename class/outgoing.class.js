@@ -9,6 +9,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 			if (outgoingData){
 				angular.extend(this, outgoingData);
 				if (!this.req.headers) this.req.headers = [];
+				if (!this.res.config) this.res.config = {description: [], date: ''};
 			} else {
 				this.name = '';
 				this.req = {
@@ -20,6 +21,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 				};
 				this.type = 'ERROR';
 				this.res = {
+					config: {description: [], date: ''},
 					status: 200,
 					description: ''
 				};
@@ -135,6 +137,13 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 				this.group.push(group.text);
 			});
 			if (this.group.indexOf('ADMIN') == -1) this.group.push('ADMIN');
+		}
+
+		set configFields(fieldsList){
+			this.res.config.description = [];
+			fieldsList.forEach((field) => {
+				this.res.config.description.push(field.text);
+			})
 		}
 
 		get completeUrl(){

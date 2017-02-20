@@ -5,6 +5,5 @@ sistemaAlertas.controller('notificationsCtrl', ['notificationService',
 	function(notificationService){
 
 		this.notifications = notificationService;
-		this.notifications.init();
 
 	}]);
