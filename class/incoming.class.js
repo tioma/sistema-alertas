@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 08/02/2017.
  */
-sistemaAlertas.factory('Incoming', ['$http', '$q', 'API_ENDPOINTS', function($http, $q, API_ENDPOINTS){
+sistemaAlertas.factory('Incoming', ['$http', '$q', 'API_ENDPOINT', function($http, $q, API_ENDPOINT){
 
 	class Incoming{
 
@@ -19,7 +19,7 @@ sistemaAlertas.factory('Incoming', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		update(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/incoming/${this.name}/change`;
+			const inserturl = `http://${API_ENDPOINT}/incoming/${this.name}/change`;
 			$http.put(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'update';
@@ -35,7 +35,7 @@ sistemaAlertas.factory('Incoming', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		addNew(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/incoming`;
+			const inserturl = `http://${API_ENDPOINT}/incoming`;
 			$http.post(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'new';
@@ -60,7 +60,7 @@ sistemaAlertas.factory('Incoming', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		remove(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/incoming`;
+			const inserturl = `http://${API_ENDPOINT}/incoming`;
 			$http.delete(inserturl, {params: {_id: this._id}}).then((response) => {
 				if (response.data.status == 'OK'){
 					deferred.resolve(response.data);

@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 04/05/2016.
  */
-sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '$q', '$state', function(storageService, $http, API_ENDPOINTS, $q, $state){
+sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINT', '$q', '$state', function(storageService, $http, API_ENDPOINT, $q, $state){
 
     class Session {
         constructor(){
@@ -21,7 +21,7 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINTS', '
 
         login(){
             const deferred = $q.defer();
-            const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/login`;
+            const inserturl = `http://${API_ENDPOINT}/login`;
 
             $http.post(inserturl, this.data).then((response) => {
                 console.log(response);

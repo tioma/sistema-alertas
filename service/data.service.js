@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 17/02/2017.
  */
-sistemaAlertas.service('dataService', ['$http', '$q', 'API_ENDPOINTS', '$filter', function($http, $q, API_ENDPOINTS, $filter){
+sistemaAlertas.service('dataService', ['$http', '$q', 'API_ENDPOINT', '$filter', function($http, $q, API_ENDPOINT, $filter){
 
 	class dataService {
 
@@ -11,7 +11,7 @@ sistemaAlertas.service('dataService', ['$http', '$q', 'API_ENDPOINTS', '$filter'
 
 		getGroups(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/groups`;
+			const inserturl = `http://${API_ENDPOINT}/groups`;
 
 			if (this.groupsData.length == 0){
 				$http.get(inserturl).then((response) => {
@@ -33,7 +33,7 @@ sistemaAlertas.service('dataService', ['$http', '$q', 'API_ENDPOINTS', '$filter'
 
 		getGroupsList(query){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/groups`;
+			const inserturl = `http://${API_ENDPOINT}/groups`;
 
 			let groupsArray = [];
 

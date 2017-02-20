@@ -104,8 +104,8 @@ html, body {
 }
 
 .half-screen {
-    min-height: 42vh;
-    max-height: 42vh;
+    min-height: 41vh;
+    max-height: 41vh;
     overflow: hidden;
 }
 

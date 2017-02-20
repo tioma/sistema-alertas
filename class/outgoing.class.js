@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 01/02/2017.
  */
-sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($http, $q, API_ENDPOINTS){
+sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINT', function($http, $q, API_ENDPOINT){
 
 	class Outgoing {
 
@@ -46,7 +46,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		update(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoings/outgoing/${this.name}/change`;
+			const inserturl = `http://${API_ENDPOINT}/outgoings/outgoing/${this.name}/change`;
 			$http.put(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'update';
@@ -62,7 +62,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		addNew(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoings/outgoing`;
+			const inserturl = `http://${API_ENDPOINT}/outgoings/outgoing`;
 			$http.post(inserturl, this).then((response) => {
 				if (response.data.status == 'OK'){
 					response.data.task = 'new';
@@ -87,7 +87,7 @@ sistemaAlertas.factory('Outgoing', ['$http', '$q', 'API_ENDPOINTS', function($ht
 
 		remove(){
 			const deferred = $q.defer();
-			const inserturl = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoing`;
+			const inserturl = `http://${API_ENDPOINT}/outgoing`;
 			$http.delete(inserturl, {params: {_id: this._id}}).then((response) => {
 				if (response.data.status == 'OK'){
 					deferred.resolve(response.data);

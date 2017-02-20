@@ -40,12 +40,14 @@ sistemaAlertas.factory('NotificationRoom', ['Socket', 'Notification', 'SYSTEMS',
 
 			});
 
-			this.socket.connection.on('disconnect', () => {
+			this.socket.connection.on('disconnect', (error) => {
 				console.log('socket desconectado');
+				console.log(error);
 				let data = {
 					system: 'Monitoreo',
 					name: 'Sistema de monitoreo',
-					description: 'Se ha perdido la conexion con el servidor de monitoreo.',
+					description: 'Sistema de monitereo, fallo de conexión.',
+					message: {description: 'Se ha perdido la conexión con el sistema de monitoreo. Verificar estado de red.'},
 					type: 'ERROR',
 					code: 'CONTROL',
 					fecha: new Date()
@@ -53,12 +55,14 @@ sistemaAlertas.factory('NotificationRoom', ['Socket', 'Notification', 'SYSTEMS',
 				this.setNotification(data);
 			});
 
-			this.socket.connection.on('connect_error', () => {
+			this.socket.connection.on('connect_error', (error) => {
 				console.log('error de conexión');
+				console.log(error);
 				let data = {
 					system: 'Monitoreo',
 					name: 'Sistema de monitoreo',
-					description: 'No se pudo establecer la conexión con el servidor de monitoreo.',
+					description: 'Sistema de monitoreo, fallo de conexión.',
+					message: {description: 'No se pudo establecer la conexión con el sistema de monitoreo. Verificar estado de red.'},
 					type: 'ERROR',
 					code: 'CONTROL',
 					fecha: new Date()

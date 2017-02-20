@@ -2,10 +2,6 @@
  * Created by kolesnikov-a on 09/02/2017.
  */
 
-/**
- * Created by kolesnikov-a on 12/05/2016.
- */
-
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var concatCss = require('gulp-concat-css');
@@ -17,7 +13,7 @@ var babel = require('gulp-babel');
 
 
 gulp.task('minify', function(){
-	gulp.src(['app.js', 'class/*.js', 'config/**/*.js', 'navigation/*.js', 'notifications/*.js', 'service/**/*.js'])
+	gulp.src(['app.js', 'class/*.js', 'config/**/*.js', 'login/*.js', 'navigation/*.js', 'notifications/*.js', 'service/**/*.js', '!service/*.development.js'])
 		.pipe(concat('app.js'))
 		.pipe(babel({
 			presets: ['es2015']
@@ -70,7 +66,8 @@ gulp.task('copy-files', function(){
 		"lib": "lib/*",
 		"fonts": "fonts/*",
 		"css": "css/bootstrap.lumen.min.css",
-		"audio": "audio/*"
+		"audio": "audio/*",
+		"images": "images/*"
 	};
 	for (var template in templates) {
 		console.log(template);

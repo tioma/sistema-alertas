@@ -9,27 +9,12 @@ var sistemaAlertas = angular.module('sistemaAlertas', [
 	'ngTagsInput'
 ]);
 
-
-sistemaAlertas.constant('API_ENDPOINTS', {
-	TERMINALES: '10.1.0.61:8090',
-	//NOTIFICACIONES: '10.1.0.55:8073' //SERVIDOR DESA
-	NOTIFICACIONES: '10.10.0.223:8073' //SERVIDOR DIEGO
-});
-
-sistemaAlertas.constant('SOCKET_EVENTS', {
-	NOTIFICACIONES_ERR: 'notificaciones:outgoing',
-	NOTIFICACIONES_INFO: 'notificaciones:incoming',
-	NOTIFICACIONES_ISALIVE: 'notificaciones:isAlive'
-});
-
 sistemaAlertas.constant('SYSTEMS', {
-	ADMIN: 'Administración de sistemas',
-	CTOL: 'Sistema de control de Terminales',
-	OB2: 'Giro de buques',
-	ALIVE: 'Control de recursos online'
+	ADMIN: 'Administración del sistema',
+	CTOL: 'Control de Terminales',
+	OB2: 'Giro de Buques',
+	ALIVE: 'Chequeo Plataformas Online'
 });
-
-
 
 sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRouterProvider, $stateProvider){
 	$urlRouterProvider.otherwise('/login');

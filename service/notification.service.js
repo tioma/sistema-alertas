@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 14/11/2016.
  */
-sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKET_EVENTS', '$timeout', 'Session', 'Notification', 'NotificationRoom', function(Socket, API_ENDPOINTS, SOCKET_EVENTS, $timeout, Session, Notification, NotificationRoom){
+sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINT', '$timeout', 'Session', 'Notification', 'NotificationRoom', function(Socket, API_ENDPOINT, $timeout, Session, Notification, NotificationRoom){
 
 	class notificationService {
 
@@ -20,7 +20,7 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINTS', 'SOCKE
 				this.lastControl = null;
 				this.watchedSystems = [];
 
-				this.socket = new Socket(API_ENDPOINTS.NOTIFICACIONES, 'notificaciones:');
+				this.socket = new Socket(API_ENDPOINT, 'notificaciones:');
 
 				Session.tasks.forEach((task) => {
 					let room = new NotificationRoom(task);

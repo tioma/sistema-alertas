@@ -1,7 +1,7 @@
 /**
  * Created by kolesnikov-a on 01/02/2017.
  */
-sistemaAlertas.factory('configFactory', ['$http', '$q', 'API_ENDPOINTS', 'Outgoing', 'Incoming', function($http, $q, API_ENDPOINTS, Outgoing, Incoming){
+sistemaAlertas.factory('configFactory', ['$http', '$q', 'API_ENDPOINT', 'Outgoing', 'Incoming', function($http, $q, API_ENDPOINT, Outgoing, Incoming){
 
 	class configFactory {
 
@@ -23,7 +23,7 @@ sistemaAlertas.factory('configFactory', ['$http', '$q', 'API_ENDPOINTS', 'Outgoi
 
 		getOutgoings(){
 			const deferred = $q.defer();
-			const uri = `http://${API_ENDPOINTS.NOTIFICACIONES}/outgoings`;
+			const uri = `http://${API_ENDPOINT}/outgoings`;
 			$http.get(uri).then((response) => {
 				if (response.data.status == 'OK'){
 					deferred.resolve(this.buildOutgoings(response.data.data));
@@ -38,7 +38,7 @@ sistemaAlertas.factory('configFactory', ['$http', '$q', 'API_ENDPOINTS', 'Outgoi
 
 		getIncomings(){
 			const deferred = $q.defer();
-			const uri = `http://${API_ENDPOINTS.NOTIFICACIONES}/incomings`;
+			const uri = `http://${API_ENDPOINT}/incomings`;
 			$http.get(uri).then((response) => {
 				if (response.data.status == 'OK'){
 					deferred.resolve(this.buildIncomings(response.data.data));
