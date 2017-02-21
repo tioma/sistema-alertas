@@ -29,20 +29,16 @@ sistemaAlertas.factory('NotificationRoom', ['Socket', 'Notification', 'SYSTEMS',
 				this.socket.connection.emit('room', system);
 
 				this.socket.connection.on('outgoing', (data) => {
-					console.log(data);
 					this.setNotification(data);
 				});
 
 				this.socket.connection.on('incoming', (data) => {
-					console.log(data);
 					this.setNotification(data);
 				});
 
 			});
 
 			this.socket.connection.on('disconnect', (error) => {
-				console.log('socket desconectado');
-				console.log(error);
 				let data = {
 					system: 'Monitoreo',
 					name: 'Sistema de monitoreo',
@@ -56,8 +52,6 @@ sistemaAlertas.factory('NotificationRoom', ['Socket', 'Notification', 'SYSTEMS',
 			});
 
 			this.socket.connection.on('connect_error', (error) => {
-				console.log('error de conexión');
-				console.log(error);
 				let data = {
 					system: 'Monitoreo',
 					name: 'Sistema de monitoreo',
@@ -95,7 +89,6 @@ sistemaAlertas.factory('NotificationRoom', ['Socket', 'Notification', 'SYSTEMS',
 		}
 
 		disconnect(){
-			console.log('desconectamos');
 			$timeout.cancel(this.controlPromise);
 			this.socket.connection.disconnect();
 		}

@@ -51,8 +51,6 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINT', '$timeo
 					});
 
 					this.socket.connection.on('isAlive', (data) => {
-						console.log('is alive');
-						console.log(data);
 						this.lastControl = new Notification(data);
 					});
 
@@ -67,7 +65,6 @@ sistemaAlertas.service('notificationService', ['Socket', 'API_ENDPOINT', '$timeo
 				});
 
 				this.socket.connection.on('reconnect_attempt', () => {
-					console.log('intentando reconectar');
 					this.lastControl = new Notification({
 						name: 'Intentando reconectar...',
 						fecha: new Date(),

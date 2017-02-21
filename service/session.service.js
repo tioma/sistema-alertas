@@ -14,9 +14,6 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINT', '$
             if (storageService.getKey('token') !== null){
                 this.reloadData();
             }
-            /*if (storageService.getSessionKey('token') !== null){
-                this.reloadData(false)
-            }*/
         }
 
         login(){
@@ -24,7 +21,6 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINT', '$
             const inserturl = `http://${API_ENDPOINT}/login`;
 
             $http.post(inserturl, this.data).then((response) => {
-                console.log(response);
                 this.userData = response.data.data;
                 this.token = response.data.data.token;
                 deferred.resolve(response);
@@ -36,8 +32,7 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINT', '$
         }
 
         reloadData(){
-            let user = null;
-            user = storageService.getObject('user');
+            let user = storageService.getObject('user');
             angular.extend(this.data, user);
         }
 
@@ -50,8 +45,6 @@ sistemaAlertas.service('Session', ['storageService', '$http', 'API_ENDPOINT', '$
         }
 
         set userData(userData){
-            //angular.extend(this.data, userData);
-            //this.data.full_name = userData.full_name;
             this.data.firstname = userData.firstname;
             this.data.lastname = userData.lastname;
             this.data.token = userData.token;

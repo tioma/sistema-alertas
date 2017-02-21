@@ -14,7 +14,6 @@ sistemaAlertas.controller('incomingCtrl', ['configFactory', 'Incoming', 'validat
 	function getIncomings(){
 		configFactory.getIncomings().then((incomings) => {
 			vm.incomings = incomings;
-			console.log(vm.incomings);
 		});
 	}
 

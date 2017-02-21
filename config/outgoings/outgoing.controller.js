@@ -7,10 +7,9 @@ sistemaAlertas.controller('outgoingCtrl', ['configFactory', 'Outgoing', 'dialogs
 
 	function getOutgoings(){
 		configFactory.getOutgoings().then((data) => {
-			console.log(data);
 			vm.outgoings = data;
 		}).catch((error) => {
-			console.log(error);
+			//console.log(error);
 		});
 	}
 
