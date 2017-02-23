@@ -26,19 +26,23 @@ sistemaAlertas.config(['$urlRouterProvider', '$stateProvider',  function($urlRou
 	}).state('notifications', {
 		url: '/notifications',
 		templateUrl: 'notifications/notifications.html',
-		controller: 'notificationsCtrl as vmNotificaciones'
+		controller: 'notificationsCtrl as vmNotificaciones',
+		requireAuth: true
 	}).state('config', {
 		url: '/config',
 		templateUrl: 'config/config.html',
-		controller: 'configCtrl as config'
+		controller: 'configCtrl as config',
+		requireAuth: true
 	}).state('config.outgoing', {
 		url: '/outgoings',
 		templateUrl: 'config/outgoings/outgoing.html',
-		controller: 'outgoingCtrl as vmOutgoings'
+		controller: 'outgoingCtrl as vmOutgoings',
+		requireAuth: true
 	}).state('config.incoming', {
 		url: '/incomings',
 		templateUrl: 'config/incomings/incoming.html',
-		controller: 'incomingCtrl as vmIncomings'
+		controller: 'incomingCtrl as vmIncomings',
+		requireAuth: true
 	})
 
 }]);
@@ -98,8 +102,8 @@ sistemaAlertas.config(['$provide', '$httpProvider', function($provide, $httpProv
 }]);
 
 
-sistemaAlertas.run(['$rootScope', 'Session',
-	function($rootScope, Session){
+sistemaAlertas.run(['$rootScope', 'Session', '$state',
+	function($rootScope, Session, $state){
 
 		$rootScope.session = Session;
 		$rootScope.loginScreen = true;
@@ -107,5 +111,12 @@ sistemaAlertas.run(['$rootScope', 'Session',
 		$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromParams) {
 			$rootScope.loginScreen = (toState.name == 'login');
 		});
+
+		$rootScope.$on('$stateChangeStart',	function(event, toState, toParams, fromState, fromParams, options){
+			if (toState.requireAuth && !$rootScope.session.isAuthenticated){
+				event.preventDefault();
+				$state.transitionTo('login');
+			}
+		})
 
 	}]);
